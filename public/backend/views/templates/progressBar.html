@@ -1,0 +1,33 @@
+{/include file="_header.html"/}
+<div id="pb" style="width: 400px;"></div>
+<br><br>
+<div id="ss" style="height: 200px;"></div>
+<script type="text/javascript">
+	$(function(){
+		$('#pb').progressbar({
+			value: 30
+		});
+
+		$('#ss').slider({
+			width: 400,
+			mode: 'h',
+			showTip: true,
+			tipFormatter: function(value) {
+				return value + '%';
+			},
+			range: true
+			// converter: {
+			// 	// 将值转换为位置 value 是值 size 是滑块的宽度
+			// 	tpPossition: function(value, size) {
+			// 		var opts = $(this).slider('options');
+			// 		return (value-opts.min) / (opts.max-opts.min) * size;
+			// 	},
+			// 	toValue: function(pos, size) {
+			// 		var opts = $(this).slider('options');
+			// 		return opts.min + (opts.max-opts.min)*(pos/size);
+			// 	}
+			// }
+		})
+	})
+</script>
+{/include file="_footer.html"/}

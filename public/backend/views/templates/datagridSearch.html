@@ -1,0 +1,99 @@
+{/include file="_header.html"/}
+<script type="text/javascript" src="/common/start_end_date.js"></script>
+<div id="dg"></div>
+<!-- 设置工具栏 -->
+<div id="tb" style="padding: 5px; height: auto;">
+	<div id="se" data-options="label:'请输入起始日期', labelWidth:'100', width:350" style="display: inline;"></div>
+	<a class="easyui-linkbutton" href="#" iconCls="icon-search" id="search">搜索</a>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#se').start_end_date();
+		$('#search').click(function(){
+			// 获取起始日期框的值
+			var seValues = $('#se').start_end_date('getValues');
+			// 使用指定条件加载数据，参数 start end 的值将会被传输到服务器端
+			$('#dg').datagrid('load', {
+				start: seValues.start,
+				end: seValues.end
+			});
+		});
+
+		$('#dg').datagrid({
+			width: 600,
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getProduct',
+			toolbar: '#tb',
+			columns: [
+				[
+					{field: 'productname',title:'产品名称',align:'center', width:'20%'},
+					{field: 'producttype',title:'产品类型', align:'center', formatter: formatProductType, 
+						styler: function(value, row, index) {
+							if (value == '1') {
+								return 'color:blue';
+							} else if (value == '2') {
+								return 'color:red';
+							} else {
+								return '';
+							}
+						}, width:'20%'
+					},
+					{field: 'productprice',title:'产品价格', align:'center', 
+						sortable: true , width:'20%'
+					},
+					{field: 'producttime',title:'上架时间', align:'center', formatter: formatProductTime, width:'20%'},
+					{field: 'productaddress',title:'产地',align:'center',formatter:formatProductAddress, width:'10%'},
+					{field: 'productvolume',title:'销售量', align:'center', width:'10%'},
+				]
+			],
+			loadMsg:'数据正在加载，请稍后',
+			onLoadSuccess: function() { // 当数据加载完毕后
+				$('#dg').datagrid('mergeCells', {
+					field: 'producttype',	// 在产品类型字段中合并单元格
+					index: 0,				// 从产品类型的第一行开始合并
+					rowspan: 3				// 共合并三行
+				});
+			}
+		});
+
+		
+
+		function formatProductTime(value, row, index) {
+			if (value == undefined) {
+				return '';
+			}
+			var date = new Date(Date.parse(value));
+			var Year = date.getFullYear();
+			var Month = date.getMonth()+1;
+			var Day   = date.getDate();
+			return Year + '年' + Month + '月' + Day + '日';
+		}
+
+		function formatProductAddress(value, row, index) {
+			switch(value) {
+				case '1': 
+					return '北京';
+					break;
+				case '2': 
+					return '上海';
+					break;
+				case '3':
+					return '南京';
+					break;
+				default:
+					return value;
+			}
+		}
+
+		function formatProductType(value, row, index) {
+			if (value == '1') {
+				return '电器';
+			} else if (value == '2') {
+				return '食品';
+			} else {
+				return value;
+			}
+		}
+	});
+</script>
+{/include file="_footer.html"/}

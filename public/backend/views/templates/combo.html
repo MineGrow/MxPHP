@@ -1,0 +1,19 @@
+{/include file="_header.html"/}
+<input id="cc" value="aaaa" name="dept"></input>
+<div id="footer">底部</div>
+<script type="text/javascript">
+	$('#cc').combo({
+		iconCls: 'icon-search',
+		onClickButton: function() {
+			alert(11);
+		},
+		hasDownArrow: false,
+	});
+
+	// 设置面板属性
+	var panel = $('#cc').combo("panel");
+	panel.panel({
+		footer: '#footer'
+	});
+</script>
+{/include file="_footer.html"/}

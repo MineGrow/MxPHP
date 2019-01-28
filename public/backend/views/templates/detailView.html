@@ -1,0 +1,62 @@
+{/include file="_header.html"/}
+<script src="/easyui/extends/view/datagrid-detailview.js" type="text/javascript"></script>
+
+<table id="dg" style="width: 700px; height: auto; border: 1px solid#ccc;"></table>
+<style type="text/css">
+	.detail {
+		float: left;
+		border-top-width: 50px;
+		padding-top: 10px;
+		padding-left: 56px;
+	}
+</style>
+<table id="dg-detailview"></table>
+<script type="text/javascript">
+	$(function(){
+		$('#dg-detailview').datagrid({
+			width: 620,
+			columns: [[
+				{field: 'productname', title: '产品名称', width: '25%'},
+				{field: 'producttype', title: '产品类型', width: '25%', align: 'center'},
+				{field: 'productprice', title: '产品价格', width: '25%', align: 'center'},
+				{field: 'productvolume', title: '产品销量', width: '25%', align: 'center'}
+			]],
+			view: detailview,
+			data: [
+				{
+					productname: '空调',
+					producttype: '电器',
+					productprice: '5000',
+					productvolume: '120',
+					productaddress: '南京',
+					producttime: '2019年1月8日',
+					img: '/common/img/zg.png',
+				},
+				{
+					productname: '冰箱',
+					producttype: '电器',
+					productprice: '500',
+					productvolume: '20',
+					productaddress: '北京',
+					producttime: '2018年12月8日',
+					img: '/common/img/mg.png',
+				},
+				{
+					productname: '瓜子',
+					producttype: '零食',
+					productprice: '50',
+					productvolume: '1020',
+					productaddress: '上海',
+					producttime: '2019年1月18日',
+					img: '/common/img/yg.png',
+				}
+			],
+			detailFormatter: function(index, row) {
+				return "<img style='float:left' src='" + row.img + "' height='40px' width='60px'>"
+						+ "<div class='detail'>产地：" + row.productaddress + "</div>"
+						+ "<div class='detail'>生产日期：" + row.producttime + "</div>";
+			}
+		});
+	});
+</script>
+{/include file="_footer.html"/}

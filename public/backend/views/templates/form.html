@@ -1,0 +1,56 @@
+{/include file="_header.html"/}
+
+<!-- 表导 -->
+<div>
+	<form id="ff" method="post">
+		<div id="nb" name="nb"></div>
+		<a id="btn" href="#" class="easyui-linkbutton">提交</a>
+	</form>
+</div>
+
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#nb').numberbox({
+			prefix: '$'
+		});
+
+		// 方式一 {{{
+		/*$('#ff').form({
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=form',
+			onSubmit: function(){
+				// 提交前触发的事件
+			},
+			success: function(data) {
+				// 服务器返回数据后触发
+				console.log(data);
+			}
+		});
+		$('#btn').click(function(){
+			$('#ff').submit();
+		});*/
+		// }}}
+		// 方式二{{{
+		$('#btn').click(function(){
+			$('#ff').form('submit', {
+				url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=form',
+				onSubmit: function(){
+					// 提交前触发的事件
+					if ($('#ff').form('validate')) {
+						alert('通过验证');
+					} else {
+						alert('未通过验证');
+						return false;
+					}
+				},
+				success: function(data) {
+					// 服务器返回数据后触发
+					console.log(data);
+				}
+			});
+		})
+		// }}}
+	});
+</script>
+{/include file="_footer.html"/}

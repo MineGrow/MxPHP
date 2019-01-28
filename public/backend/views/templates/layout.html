@@ -1,0 +1,40 @@
+{/include file="_header.html"/}
+
+<div id="layout" style="width: 800px; height: 400px;">
+	<div data-options="region:'north', title:'North Title', split:true" style="height: 100px;"></div>
+	<div data-options="region:'south', title:'South Title', split:true" style="height: 100px;"></div>
+	<div data-options="region:'east', title:'East Title', split:true" style="width: 120px;"></div>
+	<div data-options="region:'west', title:'West Title', split:true" style="width: 120px;"></div>
+	<div data-options="region:'center', title:'Center Title'" style="background: #eee;">
+		<div class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'west', title:'west'" style="width: 120px;"></div>
+			<div data-options="region:'center', title:'center'" style="width: 120px;"></div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#layout').layout({
+			fit:true
+		});
+
+		$('#layout').layout('remove', 'east');
+
+		$('#layout').layout('add', {
+			region: 'east',
+			width: 180,
+			title: '东部区域标题',
+			split: true,
+			tools: [
+				{
+					iconCls: 'icon-add',
+					handler: function(){
+						alert('add');
+					}
+				}
+			]
+		})
+	});
+
+</script>
+{/include file="_footer.html"/}

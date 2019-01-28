@@ -1,0 +1,31 @@
+{/include file="_header.html"/}
+
+<!-- 表导 -->
+<div>
+	<form id="ff" method="post">
+		<input class="easyui-filebox" name="file" style="width: 300px;" data-options="accept:'application/pdf'"></input>
+		<br><br>
+		<div id="p" class="easyui-progressbar" style="width: 300px;"></div><br><br>
+		<a id="btn" href="#" class="easyui-linkbutton">上传文件</a>
+	</form>
+</div>
+
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#ff').form({
+			iframe: false,
+			onProgress: function(percent) {
+				$('#p').progressbar('setValue', percent);
+			}
+		});
+
+		$('#btn').click(function(){
+			$('#ff').form('submit', {
+				url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=fileUpload'
+			})
+		});
+	});
+</script>
+{/include file="_footer.html"/}

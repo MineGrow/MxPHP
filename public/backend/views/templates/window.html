@@ -1,0 +1,39 @@
+{/include file="_header.html"/}
+
+<!-- <div id="win" class="easyui-window" title="My Window" data-options="iconCls:'icon-save', modal:true" style="width: 600px; height: 400px;"></div> -->
+
+<!-- <div id="border"> -->
+	<div id="win">
+		<div id="layout" class="easyui-layout" data-options="fit:true">
+			<div data-options="region:'north', title:'North Title', split:true" style="height: 20px;"></div>
+			<div data-options="region:'south', title:'South Title', split:true" style="height: 100px;"></div>
+			<div data-options="region:'east', title:'East Title', split:true" style="width: 120px;"></div>
+			<div data-options="region:'west', title:'West Title', split:true" style="width: 120px;"></div>
+			<div data-options="region:'center', title:'Center Title'" style="background: #eee;">
+				<div class="easyui-layout" data-options="fit:true">
+					<div data-options="region:'west', title:'west'" style="width: 120px;"></div>
+					<div data-options="region:'center', title:'center'" style="width: 120px;"></div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+<!-- </div> -->
+<div id="footer">
+	<span>窗口页脚</span>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#win').window({
+			width:500,
+			height: 500,
+			footer: '#footer',
+			cls: 'c8'	// c1 - c8 八种风格
+		});
+
+		$('#win').window('center');
+	});
+
+</script>
+{/include file="_footer.html"/}

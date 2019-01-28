@@ -1,0 +1,91 @@
+{/include file="_header.html"/}
+<!-- <div>
+	<select id="cc" class="easyui-combobox" name="dept" style="width: 200px;">
+		<option value="aa">item1</option>}
+		<option>item2</option>
+		<option>item3</option>
+		<option>item4</option>
+		<option>item5</option>
+	</select>
+</div> -->
+
+<input id="cc" name="dept"></input>
+
+<script type="text/javascript">
+	$(function(){
+		$('#cc').combobox({
+			width:400,
+			panelHeight: 450,
+			valueField: 'id',
+			textField: 'city',
+			groupField: 'country',
+			// url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=citysData',
+			// data: [
+			// 	{"id": 1, "country":'中国', 'city':'北京市'},
+			// 	{"id": 2, "country":'中国', 'city':'上海市'},
+			// 	{"id": 3, "country":'美国', 'city':'纽约'},
+			// 	{"id": 4, "country":'德国', 'city':'墨尔本'},
+			// ]
+			groupFormatter: function(group) {
+				if (group == "中国") {
+					return "<img src='common/img/zg.png'></img>";
+				} else {
+					return "";
+				}
+			},
+			formatter:function(row) {
+				var opts = $(this).combobox('options');
+				var text = row[opts.textField];
+				if (text == '北京市'||text == '纽约') {
+					return "<b>" + text + "</b>";
+				} else {
+					return text;
+				}
+			},
+			// 检索数据，使用本地过滤方式 {{{
+			/*mode: "local",
+			filter: function(q, row) {
+				var opts = $('#cc').combobox("options"); 	// 获取该组合框的全部分组
+				var groupname = row[opts.groupField];		// 获取该行数据的分组值
+				if (groupname == q) {
+					return row[opts.textField];				// 当用户输入的值等于分组值时则显示数据
+				} else {
+					return false;
+				}
+			}*/
+			// }}}
+			// 从服务端获取数据 {{{
+			queryParams: {
+                "c": '中国'
+            },
+            method: 'get',
+			mode: 'remote',
+			loader: function(param, success, error) {
+				var q = param.q||'';		// 获取文本框中输入的数据
+				if (q.length<1) {
+					return false;
+				}
+				$.ajax({
+					url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=filterContry',
+					data: {'q': q},
+					type: 'get',
+					dataType:'json',
+					success: function(data) {
+						success(data);
+					},
+					error: function() {
+						error();
+					}
+				});
+			},
+			loadFilter: function(data) {
+                //服务器端检索完毕后，将会把数据传送到这里，
+                //开发者可以进一步对数组的展示值进行处理
+                return data;
+            }
+			// }}}
+			
+		});
+	});
+</script>
+{/include file="_footer.html"/}

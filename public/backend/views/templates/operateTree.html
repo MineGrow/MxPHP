@@ -1,0 +1,75 @@
+{/include file="_header.html"/}
+
+<ul id="tree"></ul>
+
+<div class="easyui-menu" id="menu" style="width: 12px;">
+	<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+	<div onclick="remove()" data-options="iconCls:'icon-remove'">删除</div>
+	<div class="menu-sep"></div>
+	<div onclick="expand()">展开</div>
+	<div onclick="collapse()">折叠</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#tree').tree({
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getSyncTreeData',
+			checkbox: true,
+			lines: true,
+			loadMsg: '数据正在加载，请稍等',
+			formatter: function(node) {
+				var s = node.text;
+				if (s == '1') {
+					return '电器';
+				} else if (s == '2') {
+					return '食品';
+				} else {
+					return s;
+				}
+			},
+			onClick: function(node) {
+				// 开启编辑模式
+				$(this).tree('beginEdit', node.target);
+			},
+			// 右击节点时触发
+			onContextMenu: function(e, node) {
+				// 阻止默认事件
+				e.preventDefault();
+				// 选中右击的节点
+				$(this).tree('select', node.target);
+				// 显示菜单
+				$('#menu').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+			}
+		});
+	});
+
+	function append() {
+		var t = $('#tree');
+		var node = t.tree('getSelected');
+
+		t.tree('append', {
+			parent: (node ? node.target : null),
+			data: [{
+				text: 'newitem1'
+			}]
+		});
+	}
+
+	function remove() {
+		var node = $('#tree').tree('getSelected');
+		$('#tree').tree('remove', node.target);
+	}
+
+	function collapse() {
+		var node = $('#tree').tree('getSelected');
+		$('#tree').tree('collapse', node.target);	
+	}
+
+	function expand() {
+		var node = $('#tree').tree('getSelected');
+		$('#tree').tree('expand', node.target);
+	}
+</script>
+{/include file="_footer.html"/}

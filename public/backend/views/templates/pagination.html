@@ -1,0 +1,27 @@
+{/include file="_header.html"/}
+<div id="pp" style="background: #efefef; border: 1px solid #ccc;"></div>
+<script type="text/javascript">
+	$(function(){
+		$('#pp').pagination({
+			total: 1000,
+			pageSize: 10,
+			pageNumber:1,
+			showPageList: true,
+			pageList: [10, 50, 100],
+			showRefresh: true,
+			showPageInfo: true,
+			beforePageText: '当前页',
+			afterPageText: '总页数{pages}',
+			displayMsg: '数据总数{total}条',
+			buttons: [
+				{
+					iconCls: 'icon-add',
+					handler: function() {
+						alert('新增按钮');
+					}
+				}
+			]
+		})
+	})
+</script>
+{/include file="_footer.html"/}

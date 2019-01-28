@@ -1,0 +1,26 @@
+{/include file="_header.html"/}
+
+<input id="test" class="easyui-textbox"></input>
+<script type="text/javascript">
+	var obj1 = {
+		width: 100,
+		height: 200,
+		left: 10
+	};
+	var obj2 = {
+		width: 200,
+		top:20
+	}
+	// 合并对象
+	var obj = $.extend({}, obj1, obj2);
+	console.log(obj);
+
+	$(function(){
+		// 绑定数据
+		$('#test').data('test',5);
+		// 取出绑定的数据
+		alert($('#test').data('test'));
+	})
+
+</script>
+{/include file="_footer.html"/}

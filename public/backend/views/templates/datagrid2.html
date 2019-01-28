@@ -1,0 +1,64 @@
+{/include file="_header.html"/}
+
+<div id="dg"></div>
+<script type="text/javascript">
+	$(function(){
+		$('#dg').datagrid({
+			width: 600,
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getProduct',
+			// 冻结列表
+			frozenColumns:[
+				[
+					{field: 'productname',title:'产品名称',align:'center'}
+				]
+			],
+			columns: [
+				[
+					{field: 'attr',title:'产品属性', colspan:5, align:'center'}
+				],
+				[
+					{field: 'producttype',title:'产品类型', align:'center'},
+					{field: 'productprice',title:'产品价格', sortable: true,align:'center'},
+					{field: 'producttime',title:'上架时间', sortable: true,align:'center'},
+					{field: 'productaddress',title:'产地',align:'center'},
+					{field: 'productvolume',title:'销售量', sortable: true,align:'center'},
+				]
+			],
+			loadMsg:'数据正在加载，请稍后',
+			loadFilter: function(data) {
+				for (var i = 0; i < data.length; i++) {
+					// 格式化产品类型
+					if (data[i]['producttype'] == '1') {
+						data[i]['producttype'] = '电器';
+					} else if (data[i]['producttype'] == '2') {
+						data[i]['producttype'] = '食品';
+					} else {}
+
+					switch(data[i]['productaddress']) {
+						case '1': 
+							data[i]['productaddress'] = '北京';
+							break;
+						case '2': 
+							data[i]['productaddress'] = '上海';
+							break;
+						case '3':
+							data[i]['productaddress'] = '南京';
+							break;
+						default:
+							break;
+					}
+
+					// 格式化上架时间
+					var date = new Date(Date.parse(data[i]['producttime']));
+					var year = date.getFullYear();
+					var month = date.getMonth()+1;
+					var day   = date.getDate();
+
+					data[i]['producttime'] = year + '年' + month + '月' + day + '日';
+				}
+				return data;
+			}
+		});
+	});
+</script>
+{/include file="_footer.html"/}

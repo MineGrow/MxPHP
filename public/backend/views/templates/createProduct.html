@@ -1,0 +1,141 @@
+{/include file="_header.html"/}
+
+<style type="text/css">
+	.block{display: block;}
+</style>
+
+<form id="ff" method="post">
+	<input id="productname" name="productname" class="easyui-textbox" data-options="label:'产品名称:', width:400, labelWidth:100, cls:'block', required:true"></input>
+	<input id="producttype" name="producttype"></input>
+	<input id="productprice" name="productprice"></input>
+	<input id="productvolume" name="productvolume"></input>
+	<input id="dt"></input>
+	<input id="productaddress" name="productaddress"></input>
+	<input id="producttime" name="producttime" type="hidden"></input>
+	<a id="btn" href="#" class="easyui-linkbutton" style="width: 50px; margin-top: 20px; margin-left: 250px;">提交</a>
+</form>
+<script type="text/javascript">
+	$(function(){
+		$('#producttype').combobox({
+			label: '产品类型:',
+			required: true,
+			valueField: 'id',
+			textField: 'typename',
+			width:400,
+			labelWidth:100,
+			cls: 'block',
+			data: [
+				{id: 1, typename: '电器'},
+				{id: 2, typename: '食品'}
+			]
+		});
+
+		$('#productprice').numberbox({
+			label: '产品价格:',
+			required: true,
+			min:0,
+			width:400,
+			labelWidth:100,
+			cls: 'block',
+			precision:2,
+			prefix: '$'
+		});
+
+		$('#productvolume').numberspinner({
+			label: '产品销量:',
+			required: true,
+			min:0,
+			width:400,
+			labelWidth:100,
+			cls: 'block'
+		});
+
+		$('#dt').datebox({
+			label: '上架时间:',
+			required: true,
+			width:400,
+			panelWidth:300,
+			labelWidth:100,
+			cls: 'block',
+			editable: false,
+			parser: function(s) {
+				s = $('#producttime').val();
+				var t = Date.parse(s);
+				if (!isNaN(t)) {
+					return new Date(t);
+				} else {
+					return new Date();
+				}
+			},
+			formatter: function(date) {
+				var y = date.getFullYear();
+				var m = date.getMonth() + 1;
+				var d = date.getDate();
+				$('#producttime').val(y + '/' + m + '/' + d);
+				return y + '年' + m + '月' + d + '日';
+			},
+			currentText: '今天',
+			closeText: '关闭'
+		});
+
+		// 设置日历显示格式
+		$('#dt').datebox('calendar').calendar({
+			current: new Date(),
+			firstDay: '1'
+		});
+
+		// 使用组合框设计产品产地
+		$('#productaddress').combobox({
+			label: '产品产地:',
+			required: true,
+			width:400,
+			labelWidth:100,
+			cls: 'block',
+			valueField:"id",
+			textField:'city',
+			data: [
+				{id: 1, city: '北京'},
+				{id: 2, city: '上海'},
+				{id: 3, city: '南京'}
+			]
+		});
+
+		// 初始化表单
+		$('#ff').form({
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=createProduct',
+			iframe: false,
+			onSubmit: function() {
+				if ($('#ff').form('validate')) {
+					return true;
+				} else {
+					return false;
+				}
+			},
+			success: function(data) {
+				$.messager.progress('close');
+				$.messager.alert({
+					ok: '确认',
+					title: '消息',
+					msg: '表单提交成功',
+					icon: 'ok'
+				});
+				$('#ff').form('clear');
+			},
+			// 表导提交返回的进度
+			onProgress: function(percent) {
+				$.messager.progress({
+					title: '数据提交中',
+					msg: '数据提交进度'
+				});
+				var bar = $.messager.progress('bar');
+				bar.progressbar('setValue', percent);
+			}
+		});
+
+		$('#btn').click(function() {
+			$('#ff').submit();
+		})
+	});
+
+</script>
+{/include file="_footer.html"/}

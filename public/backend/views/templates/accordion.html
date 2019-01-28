@@ -1,0 +1,89 @@
+{/include file="_header.html"/}
+
+<div id="accordion">
+	<div title="Title1"></div>
+	<div title="Title2"></div>
+	<div title="Title3"></div>
+</div>
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#accordion').accordion({
+			width: 300,
+			height: 200
+		});
+
+		$panels = $('#accordion').accordion("panels");
+
+		// 第一个面板元素
+		$panels[0].panel({
+			loadingMessage: '加载中',
+			href: '#',
+			extractor: function(data) {
+				return data;
+			},
+			loader: function(param, success, error) {
+				$.ajax({
+					url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getPanel',
+					data: {'index':0},
+					type: 'get',
+					success: function(data) {
+						success(data);
+					},
+					error: function(data){
+						error();
+					}
+				});
+			}
+		});
+
+		// 使用索引找 第二个面板元素
+		$panel_2 = $('#accordion').accordion('getPanel', 1);
+		$panel_2.panel({
+			loadingMessage: '加载中',
+			href: '#',
+			extractor: function(data) {
+				return data;
+			},
+			loader: function(param, success, error) {
+				$.ajax({
+					url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getPanel',
+					data: {'index':1},
+					type: 'get',
+					success: function(data) {
+						success(data);
+					},
+					error: function(data){
+						error();
+					}
+				});
+			}
+		})
+
+		// 通过标题找面板
+		$panel_3 = $('#accordion').accordion('getPanel', 'Title3');
+		$panel_3.panel({
+			loadingMessage: '加载中',
+			href: '#',
+			extractor: function(data) {
+				return data;
+			},
+			loader: function(param, success, error) {
+				$.ajax({
+					url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getPanel',
+					data: {'index':2},
+					type: 'get',
+					success: function(data) {
+						success(data);
+					},
+					error: function(data){
+						error();
+					}
+				});
+			}
+		})
+	});
+
+</script>
+{/include file="_footer.html"/}

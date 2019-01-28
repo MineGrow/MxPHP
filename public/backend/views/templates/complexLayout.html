@@ -1,0 +1,104 @@
+{/include file="_header.html" BODY_ID='layout' BODY_CLASS='easyui-layout'/}
+<style type="text/css">
+	a{color: black; text-decoration: none;}
+	.easyui-accordion ul{list-style-type:none;margin:0px; padding:10px;}
+	.easyui-accordion ul li{ padding:0px;}
+	.easyui-accordion ul li a{line-height:24px;}
+	.easyui-accordion ul li div{margin:2px 0px;padding-left:10px;padding-top:2px;}
+	.easyui-accordion ul li div:hover{border:1px solid #99BBE8; background:#E0ECFF;cursor:pointer;}
+	.easyui-accordion ul li div:hover a{color:#416AA3;}
+	.icon-add-extend{background:url('img/plugin_edit.png')  no-repeat;width:18px; line-height:18px;display:inline-block;}
+	.icon-table-extend{background:url('img/table.png')  no-repeat;width:18px; line-height:18px;display:inline-block;}
+</style>
+<div data-options="region:'north', split:true, collapsible:false" style="height: 45px;">
+	<span>顶部信息</span>
+</div>
+<div data-options="region:'center'" style="background: #eee;padding: 5px;">
+	<div id="tabs" class="easyui-tabs" data-options="fit:true">
+		<div title="主页" style="padding: 20px;display: nones;"></div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+
+		$('#layout').layout('add', {
+			region: 'west',
+			width: 200,
+			title: '菜单',
+			split: true,
+			expandMode: null,
+			content:'<div id="nav" class="easyui-accordion" data-options="border:false"></div>'
+		});
+
+		$('#nav').accordion();
+
+		//定义导航中的内容
+		var menu_content = 
+			{"content":[
+				{
+					"menuid":"1","icon":"icon-extend-man","menuname":"人员信息",
+					"menus":[
+						{"menuid":"11","menuname":"添加用户","icon":"icon-add-extend","url":"http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=easyui&tpl=other"},
+					 	{"menuid":"12","menuname":"用户列表","icon":"icon-table-extend","url":"http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=easyui&tpl=nav"}
+					]
+				},
+				{
+					"menuid":"2","icon":"icon-extend-folder","menuname":"项目管理",
+					"menus":[
+						{"menuid":"21","menuname":"添加项目","icon":"icon-add-extend","url":"http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=easyui&tpl=tabs"},
+						{"menuid":"22","menuname":"项目列表","icon":"icon-table-extend","url":"http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=easyui&tpl=menu"}
+					]
+				}]
+		};
+
+		//将导航内容动态的添加到折叠面板中
+		$.each(menu_content.content, function(i, n) {
+			var menulist ='';
+			menulist +='<ul>';
+			$.each(n.menus, function(j, o) {
+				menulist += '<li><div><a id="'+o.menuid+'" href="#" ><span class="'+
+							o.icon+'" >&nbsp;</span><span class="nav" url='+o.url+'>' + 
+							o.menuname + '</span></a></div></li> ';
+			});
+			menulist += '</ul>';
+			//动态添加折叠面板中的元素
+			$('#nav').accordion('add', {
+				title: n.menuname,
+				content: menulist,
+				iconCls: 'icon ' + n.icon
+			});
+		});
+
+		$('.nav').click(function(){
+			var $p = $(this);
+			var title = $p.html();
+			//检查标签是否已被加载
+			var which = $('#tabs').tabs('getTab',title);
+			//which指的是标签对象，返回null代表该标签不存在
+			if(which){
+				//如果该标签存在的话就在选项卡中选中它
+				$('#tabs').tabs('select',title);
+			} else {
+				//动态添加标签
+				$('#tabs').tabs('add', {
+					title:title,
+					closable:true,
+					href:$p.attr('url'),
+					//对加载后的数据进行过滤，进保留<body>标签内的内容
+					extractor: function(data){
+						var pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
+						var matches = pattern.exec(data);
+						if (matches) {
+							return matches[1];
+						} else {
+							return data;
+						}
+					}
+				});
+			}
+		});
+	});
+
+</script>
+{/include file="_footer.html"/}

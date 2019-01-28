@@ -1,0 +1,27 @@
+{/include file="_header.html"/}
+
+<ul id="tree"></ul>
+
+<script type="text/javascript">
+		$(function(){
+			$('#tree').tree({
+				url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getTreeData',
+				checkbox: true,
+				lines: true,
+				loadFilter: function(data, parent) {
+					for (var i = 0; i < data.length; i++) {
+						if (data[i]['text'] == '1') {
+							data[i]['text'] = '电器';
+						} else if (data[i]['text'] == '2') {
+							data[i]['text'] = '食品';
+						} else {
+
+						}
+					}
+					return data;
+				}
+			})
+
+		})
+</script>
+{/include file="_footer.html"/}

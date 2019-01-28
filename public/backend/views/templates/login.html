@@ -1,0 +1,83 @@
+{/include file="_header.html"/}
+<div style="margin: 20px 20px;">
+	账号 <input id="account"></input>
+</div>
+<div style="margin: 20px 20px;">
+	密码 <input id="password"></input>
+</div>
+<div style="margin: 20px 150px;">
+	<button id="login">登录</button>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		// 自定义验证规则
+		$.extend($.fn.validatebox.defaults.rules, {
+			englishOrNum: {
+				validator: function(value) {
+					return /^[a-zA-Z0-9_]{1,}$/.test(value);
+				},
+				message: '请输入英文、数字、下划线或空格'
+			},
+			accountvalidate: {
+				validator: function(value, param) {
+					var account = value.trim();
+					var result; // 保存验证的结果
+					$.ajax({
+						type: 'post',
+						async: false,
+						url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=accountvalidate',
+						data: {
+							"account": account
+						},
+						success: function(data) {
+							result = data;
+						}
+					});
+
+					if (result) {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				message: '用户名已经被占用'
+			}
+		});
+
+		$('#account').validatebox({
+			required: true,							// 设置输入不能为空
+			missingMessage: '请输入账号',			// 输入为空时的提示
+			invalidMessage: '请输入合法的账号格式',	// 输入验证失败时显示的提示
+			validType: ['length[5, 10]', 'englishOrNum', 'accountvalidate'], 	// 多个验证规则使用数组表示，长度在5-10个字符，英文、数字、下划线
+			tipPosition: 'bottom',							// 提示框位置
+			validateOnCreate: false,						// 页面加载完成后不进行一次验证
+		});
+
+		$('#password').validatebox({
+			required: true,							// 设置输入不能为空
+			missingMessage: '请输入密码',			// 输入为空时的提示
+			invalidMessage: '请输入合法的密码格式',	// 输入验证失败时显示的提示
+			validType: 'length[6, 13]', 			// 长度在6-13个字符
+			deltaX: -10,							// 提示框向左边偏移10个单位，数值为负数向左偏移，为正数向右偏移
+			validateOnCreate: false,				// 页面加载完成后不进行一次验证
+		});
+
+		$('#login').click(function() {
+			// 通过isValid 方法检查是否验证通过
+			if ($('#account').validatebox('isValid')) {
+				alert('账号通过验证');
+			} else {
+				alert('账号未通过验证');
+			}
+
+			if ($('#password').validatebox('isValid')) {
+				alert('密码通过验证');
+			} else {
+				alert('密码未通过验证');
+			}
+		});
+
+	});
+</script>
+{/include file="_footer.html"/}

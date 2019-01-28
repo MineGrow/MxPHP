@@ -1,0 +1,23 @@
+{/include file="_header.html"/}
+<div id="dialog">Dialog Content.</div>
+<div id="bt">
+	<a class="easyui-linkbutton" href="#" data-options="iconCls: 'icon-ok', text:'确定', plain:true"></a>
+	<a class="easyui-linkbutton" href="#" data-options="iconCls: 'icon-cancel', text:'取消', plain:true"></a>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#dialog').dialog({
+			title: '对话框',
+			width: 400,
+			height: 200,
+			resizable:true,
+			toolbar:[
+				{text:'新增', iconCls:'icon-add', handler: function(){alert('add')}},
+				{text:'编辑', iconCls:'icon-edit', handler: function(){alert('edit')}},
+			],
+			buttons: '#bt'
+		})
+	})
+</script>
+{/include file="_footer.html"/}

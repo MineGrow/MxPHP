@@ -1,0 +1,26 @@
+{/include file="_header.html"/}
+<script src="/easyui/extends/view/datagrid-scrollview.js" type="text/javascript"></script>
+
+<table id="dg-scrollview"></table>
+<script type="text/javascript">
+	$(function(){
+		$('#dg-scrollview').datagrid({
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=scrollView',
+			width: 500,
+			height:400,
+			view: scrollview,
+			columns: [[
+				{field: 'name', title: '姓名', width: '50%'},
+				{field: 'age', title: '年龄', width: '50%'},
+			]],
+			loadMsg: '数据正在加载，请稍等',
+			rownumbers: true,
+			pageSize: 50,
+			// 设置该属性后将为每行添加详细内容
+			detailFormatter: function(rowIndex, rowData) {
+				return '详细内容';
+			}
+		});
+	});
+</script>
+{/include file="_footer.html"/}

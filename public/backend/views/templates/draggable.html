@@ -1,0 +1,17 @@
+{/include file="_header.html"/}
+<div id="dd" style="width: 100px;">
+	<div id="title" style="background: #ccc;">拖放元素</div>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#dd').draggable({
+			proxy: function(source) { // 拖动过程的展示值
+				var p = $('<div style="border:1px solid #ccc; width:100px"></div>');
+				p.html($(source).html()).appendTo('body');
+				return p;
+			},
+			handle: '#title'
+		})
+	});
+</script>
+{/include file="_footer.html"/}

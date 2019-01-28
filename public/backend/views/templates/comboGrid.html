@@ -1,0 +1,60 @@
+{/include file="_header.html"/}
+<!-- 组合网格 -->
+<select id="cg" name="dept" style="width: 250px;" value="01"></select>
+
+<script type="text/javascript">
+		$(function(){
+			$("#cg").combogrid({
+				url:"http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=combogrid",
+				width:200,
+				panelWidth:500,
+				mode:'remote',
+				idField:'id',
+				textField:'productname',
+				columns:[[
+						{field:'id' ,title:'产品编号',align:'center',width:'8%'},
+						{field:'productname' ,title:'产品名称',align:'center',width:'15%'},
+						{field:'producttype',title:'产品类型',align:'center',width:'15%',formatter:formatProductType},
+						{field:'productprice' ,title:'产品价格',align:'center',width:'15%'},
+						{field:'producttime' ,title:'上架时间',align:'center',width:'30%',formatter:formatProductTime},
+						{field:'productaddress' ,title:'产地',align:'center',width:'10%',formatter:formatProductAddress},
+						{field:'productvolume' ,title:'销售量',align:'center',width:'10%'},
+				]],
+				loadMsg:"数据正在加载，请稍等",
+
+			});
+			//格式化上架时间
+			function formatProductTime(value,row,index){
+				var date=new Date(Date.parse(value));
+				var Year=date.getFullYear();
+				var Month=date.getMonth()+1;
+				var Day=date.getDate();
+				return  Year+"年"+Month+"月"+Day+"日";				
+			}
+			//格式化产地
+			function formatProductAddress(value,row,index){
+				switch(value){
+					case "1":
+						return  "北京";
+					case "2":
+						return "上海";
+					case "3":
+						return  "南京";
+					default:
+						return value;
+				}
+			}
+			//格式化产品类型
+			function formatProductType(value,row,index){
+				if(value == "1"){
+					return "电器";
+				}else if(value == "2"){
+					return "食品";
+				}else{
+					return value;
+				}
+			}
+
+		})
+</script>
+{/include file="_footer.html"/}

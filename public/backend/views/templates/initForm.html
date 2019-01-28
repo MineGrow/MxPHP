@@ -1,0 +1,41 @@
+{/include file="_header.html"/}
+
+<!-- 表导 -->
+<div>
+	<form id="ff" method="post">
+		<input id="nickname" name="nickname"></input><br><br>
+		<input id="age" name="age"></input><br><br>
+		<input id="birthday" name="birthday"></input>
+	</form>
+</div>
+
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#nickname').textbox({
+			label: '姓名',
+			labelWidth: 150,
+			width: 350
+		});
+		$('#age').numberspinner({
+			label: '年龄',
+			labelWidth: 150,
+			width: 350
+		});
+		$('#birthday').datebox({
+			label: '出生日期',
+			labelWidth: 150,
+			width: 350
+		});
+		/*$('#ff').form('load', {
+			nickname: '张三',
+			age: '18',
+			birthday: '3/7/2000'
+		});*/
+
+		// 远程加载数据
+		$('#ff').form('load', 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=initForm');
+	});
+</script>
+{/include file="_footer.html"/}

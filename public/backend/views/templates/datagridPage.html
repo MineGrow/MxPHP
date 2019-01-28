@@ -1,0 +1,44 @@
+{/include file="_header.html"/}
+<table id="dg"></table>
+
+<script type="text/javascript">
+	$(function(){
+		var data = [];
+		for (var i = 1; i <= 200; ++i) {
+			data.push({
+				name: 'name'+i,
+				age: parseInt(Math.random()*100+1),
+			});
+		}
+		$('#dg').datagrid({
+			width: 600,
+			height: 400,
+			pagination: true,
+			rownumbers: true,
+			columns:[[
+				{field: 'name', title: '姓名', align: 'center', width: '50%'},
+				{field: 'age', title: '年龄', align: 'center', width: '50%'},
+			]],
+			data: data.slice(0,10)
+		});
+
+		$('#dg').datagrid('getPager').pagination({
+			total:data.length,
+			layout: ['list', 'sep', 'first', 'prev', 'sep', 'links','sep', 'next', 'last', 'sep', 'refresh', 'info'],
+			links: 5,
+			// 选择页面时改变数据
+			onSelectPage: function(pageNumber, pageSize) {
+				var start = (pageNumber-1) * pageSize;
+				var end   = start + pageSize;
+				$('#dg').datagrid('loadData', data.slice(start, end));
+				// 刷新并重置分页器的属性
+				$(this).pagination('refresh', {
+					total: data.length,
+					pageNumber: pageNumber
+				})
+			}
+		})
+		
+	})
+</script>
+{/include file="_footer.html"/}

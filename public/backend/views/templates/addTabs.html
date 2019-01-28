@@ -1,0 +1,45 @@
+{/include file="_header.html"/}
+
+<div id="cs_tt" class="easyui-tabs" style="width: 800px;height: 250px;" data-options="tabWidth:300">
+	<div title="主页" style="padding: 20px; display: none;">主页</div>
+</div>
+
+<a id="btn1" class="addpage" href="#" url="http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=easyui&tpl=tabs" title="添加页面1">添加页面1</a>
+<a id="btn2" class="addpage" href="#" url="http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=easyui&tpl=nav" title="添加页面2">添加页面2</a>
+
+
+<script type="text/javascript">
+	$(function(){
+		$('.addpage').linkbutton();
+
+		$('.addpage').click(function(){
+			var $page = $(this);
+			var title = $page.attr('title');
+
+			// 检查标签是否已经被加载
+			var which = $('#cs_tt').tabs('getTab', title);
+			if (which) {
+				$('#cs_tt').tabs('select', title);
+			} else {
+				// 动态加载标签
+				$('#cs_tt').tabs('add', {
+					title: title,
+					closable:true,
+					href: $page.attr('url'),
+					// 对加载后的数据进行过滤，保留 <body> 标签内的内容
+					extractor: function(data) {
+						var pattern = /<body[^>]*>((.|[\n\r])*)<\/body>/im;
+						var matches = pattern.exec(data);
+						if (matches) {
+							return matches[1];
+						} else {
+							return data;
+						}
+					}
+				})
+			}
+		})
+	});
+
+</script>
+{/include file="_footer.html"/}

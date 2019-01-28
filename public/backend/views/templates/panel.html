@@ -1,0 +1,61 @@
+{/include file="_header.html"/}
+
+<style type="text/css">
+	.pos {
+		position: absolute;
+	}
+</style>
+<div id="panel" style="padding: 10px;">
+	<p>面板内容</p>
+	<div id="footer">
+		面板底部
+	</div>
+</div>
+
+
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#panel').panel({
+			width:500,
+			height: 150,
+			title: '基础面板',
+			left: 300,
+			top: 200,
+			cls: 'pos',
+			doSize: true,
+			border: true,
+			fit:false,
+			iconCls: 'icon-tip',
+			headerCls: '',
+			noheader: false,
+			collapsible: true,
+			minimizable: true,
+			maximizable: true,
+			closable: true,
+			halign: 'top',
+			tools: [{
+				iconCls: 'icon-add',
+				handler: function() {
+					alert('new')
+				}
+			}, {
+				iconCls: 'icon-save',
+				handler: function(){
+					alert('save')
+				}
+			}],
+			// footer: '#footer',
+			href: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getPanel',
+			loadingMessage: '加载中...',
+			extractor: function(data) {
+				return data;
+			},
+			method: 'get',
+			queryParams: {'index':0}
+		})
+	});
+
+</script>
+{/include file="_footer.html"/}

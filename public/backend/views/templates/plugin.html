@@ -1,0 +1,21 @@
+{/include file="_header.html"/}
+
+<input id="t" value="test"></input>
+
+
+<script type="text/javascript">
+	// 插件内容
+	;(function($) {
+		$.fn.example = function(options) {
+			alert(this.val());
+			alert(options.name);
+		}
+	})(jQuery);
+
+	$(function(){
+		// 调用插件
+		$('#t').example({name:'firstname'});
+	})
+
+</script>
+{/include file="_footer.html"/}

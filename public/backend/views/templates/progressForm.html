@@ -1,0 +1,24 @@
+{/include file="_header.html"/}
+<form id="ff" method="post">
+	<input id="ss" name="ss[]" style="height: 200px;"></input>
+	<a class="easyui-linkbutton" id="btn">提交</a>
+</form>
+<script type="text/javascript">
+	$(function(){
+		$('#ss').slider({
+			width:400,
+			mode: 'h',
+			showTip: true,
+			range: true
+		});
+
+		$('#ff').form({
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=form'
+		});
+
+		$('#btn').click(function(){
+			$('#ff').form('submit');
+		})
+	})
+</script>
+{/include file="_footer.html"/}

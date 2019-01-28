@@ -1,0 +1,48 @@
+{/include file="_header.html"/}
+
+
+<script type="text/javascript">
+	$(function(){
+		$.messager.show({
+			cls: 'c2',
+			title: '底部信息窗口',
+			msg: '信息提示部分',
+			timeout: 0,
+			showType:'slide'
+		});
+
+		$.messager.alert({
+			title: '标题',
+			msg: '内容',
+			ok: '确定'
+		});
+
+		$.messager.confirm({
+			title: '标题',
+			msg: '内容',
+			ok: '确定',
+			cancel: '取消',
+			fn: function(b) {
+				if (b) {
+					alert('单击了确认按钮');
+				} else {
+					alert('单击了取消按钮');
+				}
+			}
+		});
+
+		$.messager.progress();
+		// $.messager.progress('close');
+		
+		$.messager.prompt({
+			title:'请输入账号',
+			msg: '账号',
+			ok: '确定',
+			cancel: '取消',
+			fn: function(val) {
+				alert(val);
+			}
+		})
+	})
+</script>
+{/include file="_footer.html"/}

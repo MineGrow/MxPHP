@@ -1,0 +1,246 @@
+{/include file="_header.html"/}
+
+<style type="text/css">
+	.panelcontent {padding: 10px 5px 15px 20px;}
+</style>
+<input id="cc"></input>
+
+<div id="se-footer">	
+	<div id="footer-button" style="float: right; margin-left: 20px;">
+		<a id="se-qk" href="#" class="se-footerbutton">清空</a>
+		<a id="se-qd" href="#" class="se-footerbutton">确定</a>
+	</div>
+</div>
+
+<input id="v_start" type="hidden"></input>
+<input id="v_end" type="hidden"></input>
+
+<div id="sc"></div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#cc').combo({
+			label: '请选择起止日期',
+			labelWidth: 100,
+			width: 350,
+			panelWidth: 250,
+			editable: false,			// 设置文本框不可编辑
+			hasDownArrow: false,		// 去除文本框下拉图标
+			validType: 'validateSE'		// 自定义验证规则
+		});
+
+		$p = $('#cc').combo('panel');
+		$body = $p.panel('body');
+
+		var start_datebox = "<div><input id='se_start' class='se_date'>";
+		var end_datebox = "<div style='margin-top:20px;margin-bottom:10px;'><input id='se_end' class='se_date'>";
+
+		var tool = "<div style='margin-top:20px;'>" + 
+				"<a id='se-past' href='#' class='se_toolbutton'>过去</a>" + 
+				"<a id='se-week' href='#' class='se_toolbutton'>一周</a>" + 
+				"<a id='se-month' href='#' class='se_toolbutton'>一月</a>" + 
+				"<a id='se-quarter' href='#' class='se_toolbutton'>一季</a>" + 
+				"<a id='se-year' href='#' class='se_toolbutton'>一年</a>" + 
+				"</div>";
+		//分割线
+		var split = "<hr style='border:none; border-top:1px solid #95B8E7;' />";
+
+		$body.append(start_datebox);
+		$body.append(end_datebox);
+		$body.append(split);
+		$body.append(tool);
+
+		$('.se_toolbutton').linkbutton({
+			width: 42,
+			height: 30,
+			group: "tool-btn",
+			toggle: true
+		});
+
+		$('#sc').calendar({
+			firstDay: "1"
+		});
+
+		$('#se_start').datebox({
+			width: 200,
+			label: '开始时间',
+			sharedCalendar: '#sc',
+			labelWidth:60,
+			currentText: '今天',
+			closeText: '关闭',
+			editable: false,
+			parser: function(s) {
+				s = $('#v_start').val();
+				var t = Date.parse(s);
+				if (!isNaN(t)) {
+					return new Date(t);
+				} else {
+					return new Date();
+				}
+			},
+			formatter: function(date) {
+				var y = date.getFullYear();
+				var m = date.getMonth()+1;
+				var d = date.getDate();
+
+				$('#v_start').val(y+'/'+m+'/'+d);
+				return y+'年'+m+'月'+d+'日';
+			}
+		});
+
+		$('#se_end').datebox({
+			width: 200,
+			label: '结束时间',
+			sharedCalendar: '#sc',
+			labelWidth:60,
+			currentText: '今天',
+			closeText: '关闭',
+			editable: false,
+			parser: function(s) {
+				s = $('#v_end').val();
+				var t = Date.parse(s);
+				if (!isNaN(t)) {
+					return new Date(t);
+				} else {
+					return new Date();
+				}
+			},
+			formatter: function(date) {
+				var y = date.getFullYear();
+				var m = date.getMonth()+1;
+				var d = date.getDate();
+
+				$('#v_end').val(y+'/'+m+'/'+d);
+				return y+'年'+m+'月'+d+'日';
+			}
+		});
+
+		// 设置面板属性
+		$p.panel({
+			bodyCls: 'panelcontent',
+			footer: '#se-footer'
+		});
+
+		$('.se-footerbutton').linkbutton({
+			width: 42,
+			height: 30
+		});
+
+
+		// 用户点击确定按钮
+		$('#se-qd').click(function(){
+			if ($('#v_start').val() == '' && $('#v_end').val() == '') {
+				$('#cc').combo('setText', '');
+			} else {
+				$('#cc').combo('setText', $('#se_start').datebox('getValue') + '至' + $('#se_end').datebox('getValue'));
+			}
+
+			$('#cc').combo('hidePanel');
+			$('#cc').combo('validate');
+		});
+
+		$('#se-qk').click(function(){
+			$('.se_toolbutton').linkbutton('unselect');
+			$('#v_start').val('');
+			$('#se_start').datebox('setValue', '');
+			$('#v_end').val('');
+			$('#se_end').datebox('setValue', '');
+			$('#se_end').datebox('readonly', false);
+			$('#se_start').datebox('readonly', false);
+		});
+
+		// 获取当前时间戳
+		var date = new Date();
+		var year = date.getFullYear();
+		var month = date.getMonth()+1;
+		var day   = date.getDate();
+
+		var now = year + '/' + month + '/' + day;
+		var t = new Date(date.getTime() - 1000*60*60*24*7);
+		var p_week = t.getFullYear() + '/' + (t.getMonth()+1) + '/' + t.getDate(); // 当前时间一周前的时间
+		var t = new Date(date.getTime() - 1000*60*60*24);
+		var p_yesterday = t.getFullYear() + '/' + (t.getMonth()+1) + '/' + t.getDate();	// 当前时间前一天
+
+		if ((month-1) > 0) {
+			var p_month = year + '/' + (month-1) + '/' + day; // 当前时间一月前的时间
+		} else {
+			var p_month = (year-1) + '/' + (month+11) + '/' + day;	// 当前时间为1月时
+		}
+
+		if ((month-3) > 3) {
+			var p_quarter = year + '/' + (month-3) + '/' + day;	// 一季度
+		} else {
+			var p_quarter = (year-1) + '/' + (month+9) + '/' + day;	// 一季度
+		}
+
+		var p_year = (year - 1) + '/' + month + '/' + day; // 当前时间一年前的时间
+
+		// 设置区间为一周
+		$('#se-week').click(function(){
+			$('#v_start').val(p_week);
+			$('#se_start').datebox('setValue', p_week);
+			$('#v_end').val(now);
+			$('#se_end').datebox('setValue', now);
+			$('#se_end').datebox('readonly');
+			$('#se_start').datebox('readonly');
+		});
+
+		// 设置区间为一月
+		$('#se-month').click(function(){
+			$('#v_start').val(p_month);
+			$('#se_start').datebox('setValue', p_month);
+			$('#v_end').val(now);
+			$('#se_end').datebox('setValue', now);
+			$('#se_end').datebox('readonly');
+			$('#se_start').datebox('readonly');
+		});
+
+		$('#se-quarter').click(function(){
+			$('#v_start').val(p_quarter);
+			$('#se_start').datebox('setValue', p_quarter);
+			$('#v_end').val(now);
+			$('#se_end').datebox('setValue', now);
+			$('#se_end').datebox('readonly');
+			$('#se_start').datebox('readonly');
+		});
+
+		$('#se-year').click(function(){
+			$('#v_start').val(p_year);
+			$('#se_start').datebox('setValue', p_year);
+			$('#v_end').val(now);
+			$('#se_end').datebox('setValue', now);
+			$('#se_end').datebox('readonly');
+			$('#se_start').datebox('readonly');
+		});
+
+		// 自定义时间区间，默认时昨天和今天
+		$('#se-past').click(function(){
+			$('#v_start').val(p_yesterday);
+			$('#se_start').datebox('setValue', p_yesterday);
+			$('#v_end').val(now);
+			$('#se_end').datebox('setValue', now);
+			$('#se_end').datebox('readonly', false);
+			$('#se_start').datebox('readonly', false);
+		});
+
+		// 自定义验证规则
+		$.extend($.fn.validatebox.defaults.rules, {
+			validateSE: {
+				validator: function() {
+					var start = $('#v_start').val();
+					var end   = $('#v_end').val();
+					// 小于号前后不能有空格
+					if ((start == '' && end == '') || start<end) {
+						return true;
+					} else {
+						return false;
+					}
+				}, 
+				message: '请输入合法的起止日期'
+			}
+		})
+
+	})
+</script>
+
+{/include file="_footer.html"/}

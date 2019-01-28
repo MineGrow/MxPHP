@@ -1,0 +1,22 @@
+{/include file="_header.html"/}
+<script src="/easyui/extends/view/datagrid-bufferview.js" type="text/javascript"></script>
+
+<table id="dg-bufferview"></table>
+<script type="text/javascript">
+	$(function(){
+		$('#dg-bufferview').datagrid({
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=bufferView',
+			width: 500,
+			height:200,
+			view: bufferview,
+			columns: [[
+				{field: 'name', title: '姓名', width: '50%'},
+				{field: 'age', title: '年龄', width: '50%'},
+			]],
+			loadMsg: '数据正在加载，请稍等',
+			rownumbers: true,
+			pageSize: 50
+		});
+	});
+</script>
+{/include file="_footer.html"/}

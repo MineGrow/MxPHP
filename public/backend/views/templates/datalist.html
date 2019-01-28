@@ -1,0 +1,39 @@
+{/include file="_header.html"/}
+<div id="dl"></div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#dl').datalist({
+			width:300,
+			line: true,
+			checkbox: true,
+			valueField: 'value',
+			textField: 'text',
+			groupField: 'group',
+			data: [ // 本地数据
+				{value: 1, text: '空调', group: 1},
+				{value: 2, text: '电视', group: 1},
+				{value: 3, text: '薯片', group: 2},
+				{value: 4, text: '瓜子', group: 2},
+			],
+			// 格式化分组
+			groupFormatter: function(value, row, index) {
+				if (value == '1') {
+					return '电器';
+				} else if (value == '2') {
+					return '食品';
+				} else {
+					return '未知';
+				}
+			},
+			textFormatter: function(value, row, index) {
+				if (index%2) {
+					return "<span style='color:#F00'>" + value + "</span>";
+				} else {
+					return value;
+				}
+			}
+		});
+	})
+</script>
+{/include file="_footer.html"/}

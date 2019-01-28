@@ -1,0 +1,51 @@
+{/include file="_header.html"/}
+<style type="text/css">
+	#border {
+		border-style: solid;
+		border-width: 1px;
+		height: 100px;
+		width: 200px;
+		margin-left: 500px;
+		margin-top: 200px;
+	}
+</style>
+
+<div id="border">
+	<div class="easyui-menu" id="mm">
+		<div name="菜单元素一" id="m1">菜单元素一</div>
+		<div>菜单元素二</div>
+		<div>菜单元素三</div>
+	</div> 
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#mm').menu({
+			inline:true,
+			onClick: function(item) {
+				alert(item.id + ':' + item.name);
+			}
+		});
+		// 初始化菜单
+		$('#mm').menu('show', {
+			left:200,
+			top:100
+		});
+		// 更改指定的菜单元素 {{{
+		var item = $('#mm').menu('findItem', '菜单元素一');
+		$('#mm').menu('setText', {
+			target: item.target,
+			text: '菜单元素新'
+		})
+		// }}}
+		// 指定图标 {{{
+		$('#mm').menu('setIcon', {
+			target: $('#mm').menu('findItem', '菜单元素二').target,
+			iconCls: 'icon-ok'
+		})
+		// }}}
+		
+
+	});
+</script>
+{/include file="_footer.html"/}

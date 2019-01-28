@@ -1,0 +1,37 @@
+{/include file="_header.html"/}
+
+<a id="btn" href="#">按钮链接</a>
+
+
+<div>
+	<a id="btn1" href="#">按钮链接1</a>
+	<a id="btn2" href="#">按钮链接2</a>
+	<a id="btn3" href="#">按钮链接3</a>
+</div>
+<script type="text/javascript">
+	$(function(){
+		$('#btn1').linkbutton({
+			toggle:true,
+			group:'btn-group'
+		});
+		$('#btn2').linkbutton({
+			toggle:true,
+			group:'btn-group'
+		});
+		$('#btn3').linkbutton({
+			toggle:true,
+			group:'btn-group'
+		});
+		$('#btn').linkbutton({
+			iconCls: 'icon-search',
+			onClick: function() {
+				alert('easyui');
+			}
+		});
+		$('#btn').linkbutton('resize', {
+			width:'100%',
+			height:32
+		})
+	})
+</script>
+{/include file="_footer.html"/}

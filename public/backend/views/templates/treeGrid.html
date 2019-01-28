@@ -1,0 +1,209 @@
+{/include file="_header.html"/}
+
+<div id="tree"></div>
+
+<div class="easyui-menu" id="menu" style="width: 12px;">
+	<div onclick="append()" data-options="iconCls:'icon-add'">添加</div>
+	<div onclick="remove()" data-options="iconCls:'icon-remove'">删除</div>
+	<div class="menu-sep"></div>
+	<div onclick="expand()">展开</div>
+	<div onclick="collapse()">折叠</div>
+</div>
+<script type="text/javascript">
+	var appendid = 100;	// 定义新增节点时的id
+
+	var date = new Date();
+	var Year = date.getFullYear();
+	var Month = date.getMonth()+1;
+	var Day   = date.getDate();
+
+	var cur  = Year + '/' + Month + '/' + Day + '/';
+
+	$(function(){
+		/* 为树形网格新增单元格编方法
+		1、index 可被编辑的节点id
+		2、field 可悲编辑的列索引
+		指定的行加指定的列即使一个指定的单元格
+		*/
+		$.extend($.fn.treegrid.methods, {
+			editCell: function(jq, param) {
+				return jq.each(function() {
+					var opts = $(this).treegrid('options');
+					var fields = $(this).treegrid('getColumnFields', true)
+						.concat($(this).treegrid('getColumnFields'));
+					for (var i = 0; i < fields.length; i++) {
+						var col = $(this).treegrid('getColumnOption', fields[i]);
+						col.editor1 = col.editor;
+						if (fields[i] != param.field) {
+							col.editor = null;
+						}
+					}
+					$(this).treegrid('beginEdit', param.index);
+					for (var i = 0; i < fields.length; i++) {
+						var col = $(this).treegrid('getColumnOption', fields[i]);
+						col.editor = col.editor1;
+					}
+				})
+			}
+		});
+		var editIndex = false;
+
+		$('#tree').treegrid({
+			width: 1000,
+			rownumbers: true,
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getTreeGridData',
+			idField: 'id',
+			treeField: 'productname',
+			showFooter: true,
+			loadMsg: '数据正在加载，请稍等',
+			frozenColumns:[[
+				{field: 'productname', title: '产品名称', width: '20%', editor: 'textbox'}
+			]],
+			// 右击节点时触发
+			onContextMenu: function(e, row) {
+				// 阻止默认事件
+				e.preventDefault();
+				// 选中右击的节点
+				$(this).treegrid('select', row['id']);
+				// 显示菜单
+				$('#menu').menu('show', {
+					left: e.pageX,
+					top: e.pageY
+				});
+			},
+			columns:[[	       
+					//产品价格在编辑模式时使用数字框
+				{field:'productprice' ,width:'20%',title:'产品价格',editor:
+					{type:"numberbox",options:{
+						required:true,
+						min:0,
+						precision:2,
+						prefix:'$',
+					}}
+				},
+				//产品上架时间在编辑模式时使用日期框
+				{field:'producttime' ,title:'上架时间',width:'30%',formatter:formatProductTime,
+					editor:{type:"datebox",options:{
+						required:true,
+						editable:false,
+						parser: function(s){
+							var t = Date.parse(s);
+							if (!isNaN(t)){										
+								return new Date(t);
+							}else{
+								return new Date();
+							}
+						},
+						formatter:function(date){
+							var y = date.getFullYear();
+							var m = date.getMonth()+1;
+							var d = date.getDate();
+							return y+'/'+m+'/'+d+'/';
+						},
+						currentText:"今天",
+						closeText:"关闭",
+					}}
+				},
+				//产品产地在编辑模式时使用组合框
+				{field:'productaddress' ,title:'产地',width:'20%',formatter:formatProductAddress,
+				editor:{type:"combobox",options:{
+					required:true,
+					valueField:'id',
+					textField:'city',
+					data:[
+		      			{id:1,city:'北京'},
+		      			{id:2,city:'上海'},
+		      			{id:3,city:'南京'}
+					]}}
+				},
+				//产品类型在编辑模式时使用数字微调器
+				{field:'productvolume' ,title:'销售量',width:'10%',editor:
+					{type:"numberspinner",options:{
+						required:true,
+						min:0,
+					}}
+				},
+			]],
+			onDblClickCell: function(field, row) {
+				var id = row['id'];
+				if (editIndex) {
+					$(this).treegrid('unselect', id).treegrid('endEdit', id);
+				} else {
+					$(this).treegrid('select', id).treegrid('editCell', {
+						index: id,
+						field: field
+					});
+				}
+			},
+			onBeforeEdit: function(row) {
+				editIndex = true;
+			},
+			onAfterEdit: function(row, changes) {
+				editIndex = false;
+			},
+			onCancelEdit: function(row) {
+				editIndex = false;
+			}
+		});
+
+		//格式化上架时间
+		function formatProductTime(value,row,index){
+			if(value == undefined){
+				return '';
+			}else{
+				var date=new Date(Date.parse(value));
+				var Year=date.getFullYear();
+				var Month=date.getMonth()+1;
+				var Day=date.getDate();
+				return  Year+"年"+Month+"月"+Day+"日";						
+			}
+		
+		}
+		//格式化产地
+		function formatProductAddress(value,row,index){
+			switch(value){
+				case "1":
+					return  "北京";
+				case "2":
+					return "上海";
+				case "3":
+					return  "南京";
+				default:
+					return value;
+			}
+		}
+	});
+
+	function append() {
+		var t = $('#tree');
+		var node = t.treegrid('getSelected');
+
+		t.treegrid('append', {
+			parent: node.id,
+			data: [{
+				'productname': '新增产品'+appendid,
+				'producttype': '请输入产品价格',
+				'id': appendid++,
+				'producttime': cur,
+				'productaddress': '',
+				'productvolume': ''
+			}]
+		});
+	}
+
+	function remove() {
+		var node = $('#tree').treegrid('getSelected');
+		$('#tree').tree('remove', node.id);
+	}
+
+	function collapse() {
+		var node = $('#tree').treegrid('getSelected');
+		$('#tree').tree('collapse', node.id);	
+	}
+
+	function expand() {
+		var node = $('#tree').treegrid('getSelected');
+		$('#tree').tree('expand', node.id);
+	}
+</script>
+{/include file="_footer.html"/}

@@ -1,0 +1,69 @@
+{/include file="_header.html"/}
+<style type="text/css">
+	.newStyle {
+		margin-bottom: 10px;
+	}
+</style>
+<!-- <input class="easyui-textbox" data-options="
+	width:360, 
+	height:20,
+	prompt:'请输入账号'
+"/>
+<br>
+<input id="cb" />
+<script type="text/javascript">
+	$('#cb').textbox({
+		cls:'newStyle'
+	})
+</script> -->
+
+<div>
+	<input id="nickname"></input>
+</div>
+<div>
+	<input id="phone"></input>
+</div>
+
+<div>
+	<input id="tb"></input>
+</div>
+
+<script type="text/javascript">
+	$('#nickname').textbox({
+		label: '昵称',
+		labelPosotion: 'left',  	// 显示在文本框的左侧
+		labelAlign: 'right',		// 右侧对齐，字符串的最后一个字符对齐
+		width:300,
+		cls:'newStyle',
+		icons: [
+			{
+				iconCls: 'icon-man',
+				handler: function(e) {
+					alert('图标被单击');
+				}
+			}
+		]
+	});
+	$('#phone').textbox({
+		label: '手机号码',
+		labelPosotion: 'left',  	// 显示在文本框的左侧
+		labelAlign: 'right',		// 右侧对齐，字符串的最后一个字符对齐
+		width:300,
+		cls:'newStyle'
+	});
+	$('#tb').textbox({
+		buttonText: '用户名',
+		// buttonIcon: 'icon-man',
+		buttonAlign: 'left',			// 左对齐
+		icons: [
+			{
+				iconCls: 'icon-man',
+				handler: function(e) {
+					alert('图标被单击');
+				}
+			}
+		],
+		width:250
+	})
+</script>
+{/include file="_footer.html"/}

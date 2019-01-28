@@ -1,0 +1,243 @@
+{/include file="_header.html"/}
+
+<!-- 表导 -->
+<div id="dg"></div>
+<div id="tb">
+	<a href="#" class="easyui-linkbutton" id="add" data-options="iconCls:'icon-add', plain:true">新增</a>
+	<a href="#" class="easyui-linkbutton" id="save" data-options="iconCls:'icon-save', plain:true">保存</a>
+	<a href="#" class="easyui-linkbutton" id="cancel" data-options="iconCls:'icon-cancel', plain:true">取消</a>
+	<a href="#" class="easyui-linkbutton" id="remove" data-options="iconCls:'icon-remove', plain:true">删除</a>
+</div>
+
+<div id="bb">
+	<a href="#" class="easyui-linkbutton" id="cancel">取消</a>
+	<a href="#" class="easyui-linkbutton" id="ok">确定</a>
+</div>
+
+<div class="easyui-dialog" id="dd" style="width: 350px;height: 450px;" data-options="resizable:true, modal:true, closed:true, buttons:'#bb'">
+	<form id="ff" method="post" style="padding: 5px 0px 0px 15px;">
+		<input id="productname" name="productname" class="easyui-textbox" data-options="label:'产品名称：', width:400, labelWidth:100, cls: 'block', required:true"></input>
+		<input id="producttype" name="producttype"></input>
+		<input id="productprice" name="productprice"></input>
+		<input id="productvolume" name="productvolume"></input>
+		<input id="producttime" name="producttime"></input>
+		<input id="productaddress" name="productaddress"></input>
+		<input id="id" name="id" style="display: none;"></input>
+	</form>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#dg-c82').datagrid({
+			width: 610,
+			toolbar: '#tb-c82',
+			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getProduct',
+			singleSelect: true,
+			columns:[
+				[
+					{field: 'id', title:'产品编号', align: 'center', width:'100', hidden: true},
+					{field:'productname' ,title:'产品名称',align:'center',width:'100'},
+					{field:'producttype',title:'产品类型',align:'center',width:'100',formatter:formatProductType},
+					{field:'productprice' ,title:'产品价格',align:'center',width:'100'},
+					{field:'producttime' ,title:'上架时间',align:'center',width:'100',formatter:formatProductTime},
+					{field:'productaddress' ,title:'产地',align:'center',width:'100',formatter:formatProductAddress},
+					{field:'productvolume' ,title:'销售量',align:'center',width:'100'},
+				]
+			],
+			loadMsg: '数据正在加载，请稍等'
+		});
+
+		//格式化上架时间
+		function formatProductTime(value,row,index){
+			var date=new Date(Date.parse(value));
+			var Year=date.getFullYear();
+			var Month=date.getMonth()+1;
+			var Day=date.getDate();
+			return  Year+"年"+Month+"月"+Day+"日";				
+		}
+		//格式化产地
+		function formatProductAddress(value,row,index){
+			switch(value){
+				case "1":
+					return  "北京";
+				case "2":
+					return "上海";
+				case "3":
+					return  "南京";
+				default:
+					return value;
+			}
+		}
+		//格式化产品类型
+		function formatProductType(value,row,index){
+			if(value == "1"){
+				return "电器";
+			}else if(value == "2"){
+				return "食品";
+			}else{
+				return value;
+			}
+		}
+
+		$('#producttype').combobox({
+			label: '产品类型：',
+			required: true,
+			valueField: 'id',
+			textField: 'typename',
+			width:400,
+			labelWidth:100,
+			cls: 'block',
+			data: [
+				{id: 1, typename: '电器'},
+				{id: 2, typename: '食品'},
+			]
+		});
+
+		//使用数字框来设计价格输入框
+			$("#productprice").numberbox({
+				required:true,
+				label:'产品价格：',
+				min:0,
+				width:400,
+				labelWidth:100,
+				precision:2,
+				prefix:'$',
+				cls:'block',
+			});
+			//使用数字微调器来设计销量输入框
+			$("#productvolume").numberspinner({
+				required:true,
+				label:'产品销量：',
+				min:0,
+				width:400,
+				labelWidth:100,
+				cls:'block',
+			});
+			//使用日期框来设计上架时间
+			$("#producttime").datebox({
+				required:true,
+				label:'上架时间：',
+				width:400,
+				panelWidth:300,
+				labelWidth:100,
+				cls:'block',
+				editable:false,
+				currentText:"今天",
+				closeText:"关闭",
+			});
+			//设置日历的显示格式
+			$("#producttime").datebox("calendar").calendar({
+				/*初始化为当前日期，Date对象可以通过毫秒数以及日期格式进行创建，如果不填写
+				创建条件的话默认以当前日期进行创建*/
+				current:new Date(),
+				firstDay:"1"//设置星期一为每周的第一天
+			});
+			//使用组合框设计产品产地
+			$("#productaddress").combobox({
+				required:true,
+				label:'产品产地：',
+				valueField:'id',
+				textField:'city',
+				width:400,
+				labelWidth:100,
+				cls:'block',
+				data:[
+				      {id:1,city:'北京'},
+				      {id:2,city:'上海'},
+				      {id:3,city:'南京'}
+				]
+			});
+
+		var state = "1";
+
+		$('#add-c82').click(function(){
+			state = "1";
+			$('#ff').form('clear');
+			$('#dd').dialog("open").dialog('center').dialog('setTitle', '添加产品');
+		});
+
+		$('#edit-c82').click(function() {
+			state = '2';
+			var row = $('#dg-c82').datagrid('getSelected');
+			if (row) {
+				$('#ff').form('load', {
+					productname: row['productname'],
+					producttype: row['producttype'],
+					productprice: row['productprice'],
+					producttime: row['producttime'],
+					productaddress: row['productaddress'],
+					productvolume: row['productvolume'],
+					id: row['id']
+				});
+				$('#dd').dialog("open").dialog("center").dialog("setTitle", '编辑产品');
+			}
+		});
+
+		$('#delete-c82').click(function() {
+			var row = $('#dg-c82').datagrid('getSelected');
+			if (row) {
+				$.messager.confirm('确认', '是否确认删除这条数据', function(r) {
+					if (r) {
+						$.ajax({
+							type: 'post',
+							url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=deleteProduct',
+							data: {id: row.id},
+							dataType:'json',
+							success: function(result) {
+								if (result.status) {
+									$('#dg-c82').datagrid('reload');
+								} else {
+									$.messager.show({
+										title: 'Error',
+										msg: result.errorMsg
+									})
+								}
+							}
+						});
+					}
+				});
+			}
+		});
+
+		$('#cancel').click(function() {
+			$('#dd').dialog('close');
+		});
+
+		$('#ok').click(function() {
+			if (state == '2') {
+				// 更新数据
+				var url = 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=updateProduct';
+			} else {
+				// 创建数据
+				var url = 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=createProduct';
+			}
+
+			$('#ff').form('submit', {
+				url: url,
+				onSubmit: function() {
+					if ($('#ff').form('validate')) {
+						return true;
+					} else {
+						return false;
+					}
+				},
+				success: function(data) {
+					console.log(data, data.errorMsg);
+					$.messager.alert({
+						ok: '确认',
+						title: '消息',
+						msg: '表单提交成功',
+						icon: 'ok'
+					});
+					// 清空表单
+					$('#ff').form('clear');
+					// 关闭对话框
+					$('#dd').dialog('close');
+					// 更新数据网格
+					$('#dg-c82').datagrid('reload');
+				}
+			})
+		});
+	});
+</script>
+{/include file="_footer.html"/}

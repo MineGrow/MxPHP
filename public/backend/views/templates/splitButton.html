@@ -1,0 +1,25 @@
+{/include file="_header.html"/}
+
+<div>
+	<a id="mb" href="javascript:void(0);" class="easyui-splitbutton" data-options="menu:'#mm', iconCls:'icon-man'">编辑</a>
+	<div id="mm" style="width: 150px;">
+		<div>详情</div>
+		<div>修改</div>
+		<div>删除</div>
+	</div>
+</div>
+<br>
+<br>
+<!-- 切换按钮 -->
+<input class="easyui-switchbutton"></input>
+<script type="text/javascript">
+	$(function(){
+		$('#mb').splitbutton({
+			menu: '#mm',
+			onClick: function(){
+				alert('splitbutton');
+			}
+		})
+	})
+</script>
+{/include file="_footer.html"/}

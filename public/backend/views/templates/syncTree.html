@@ -1,0 +1,29 @@
+{/include file="_header.html"/}
+
+<ul id="tree"></ul>
+
+<script type="text/javascript">
+		$(function(){
+			$('#tree').tree({
+				url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getSyncTreeData',
+				checkbox: true,
+				lines: true,
+				loadMsg: '数据正在加载，请稍等',
+				formatter: function(node) {
+					var s = node.text;
+					if (s == '1') {
+						return '电器';
+					} else if (s == '2') {
+						return '食品';
+					} else {
+						return s;
+					}
+				},
+				onClick: function(node) {
+					// 开启编辑模式
+					$(this).tree('beginEdit', node.target);
+				}
+			});
+		});
+</script>
+{/include file="_footer.html"/}

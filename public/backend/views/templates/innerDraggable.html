@@ -1,0 +1,76 @@
+{/include file="_header.html"/}
+<style type="text/css">
+	#border {
+		border: 1px solid;
+		width: 500px;
+		height: 300px;
+	}
+</style>
+<div id="border">
+	<div id="dd" style="width: 60px;height: 16px;">
+		<div id="title" style="background: #ccc; width: 60px; height: 16px;">拖放元素</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#dd').draggable({
+			proxy: function(source) { // 拖动过程的展示值
+				var p = $('<div style="border:1px solid #ccc; width:100px"></div>');
+				p.html($(source).html()).appendTo('body');
+				return p;
+			},
+			handle: '#title',
+			onDrag: function(e) {
+
+				// 指定范围内拖动{{{
+				/*var d = e.data; 		// 获取事件对象的data属性
+				var c = $(d.target);	// 获取拖动元素的 jquery对象
+				var p = $(d.parent);	// 获取拖动元素的父元素的 jquery 对象
+
+				// 获取父元素的边界
+				var p_left = p.offset().left;
+				var p_top  = p.offset().top;
+				var p_right 	= p.width()+p.offset().left;
+				var p_bottom 	= p.height()+p.offset().top;
+
+				// 拖动元素的位置
+				var left = d.left;
+				var top  = d.top;
+				// 调整元素位置 
+				if (left < p_left) {
+					left = p_left;
+				}
+				if (top < p_top) {
+					top = p_top;
+				}
+				if (left + c.outerWidth() > p_right) {
+					left = p_right - c.outerWidth();
+				}
+				if (top + c.outerHeight() > p_bottom) {
+					top = p_bottom - c.outerHeight();
+				}
+				d.left = left;
+				d.top  = top;*/
+				// }}}
+
+				// 快速拖放 {{{
+					var d = e.data;
+					d.left = convert(d.left);
+					d.top  = convert(d.top);
+					function convert(v) {
+						var r = parseInt(v/20)*20; // 当前位置转换为 20 的倍数
+
+						// 当前位置在 20 倍数的基础上移动距离是否超过 10px 
+						// 如果超过的话就直接移动 20px,否则保持当前位置
+						if (Math.abs(v % 20) > 10) {
+							r += v > 0 ? 20 : -20;
+						}
+						return r;
+					}
+				// }}}
+			}
+		})
+	});
+</script>
+{/include file="_footer.html"/}

@@ -1,0 +1,51 @@
+{/include file="_header.html"/}
+
+<style type="text/css">
+	#border{
+		border:1px solid;
+		width: 500px;
+		height: 300px;
+		margin-left: 200px;
+		float: left;
+	}
+	#d1, #d2, #d3 {
+		margin-bottom: 10px;
+	}
+</style>
+<div style="float: left; width: 60px; margin-right: 20px;">
+	<div id="d1" style="width: 60px; height: 16px;">
+		<div id="element1" style="background: #0f0; width: 60px; height: 16px;">拖放元素1</div>
+	</div>
+	<div id="d2" style="width: 60px; height: 16px;">
+		<div id="element2" style="background: #0f0; width: 60px; height: 16px;">拖放元素2</div>
+	</div>
+	<div id="d3" style="width: 60px; height: 16px;">
+		<div id="element3" style="background: #0f0; width: 60px; height: 16px;">拖放元素3</div>
+	</div>
+</div>
+
+<div id="border"></div>
+
+<script type="text/javascript">
+	$(function(){
+		$('#d1').draggable({
+			handle: '#element1',
+			revert: true
+		});
+		$('#d2').draggable({
+			handle: '#element2',
+			revert: true
+		});
+		$('#d3').draggable({
+			handle: '#element3',
+			revert: true
+		});
+		$('#border').droppable({
+			accept: '#d1, #d2',
+			onDrop: function(e, source) {
+				$(this).append($(source).html());
+			}
+		})
+	});
+</script>
+{/include file="_footer.html"/}

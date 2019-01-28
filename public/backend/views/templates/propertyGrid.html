@@ -1,0 +1,28 @@
+{/include file="_header.html"/}
+<table id="pg" style="width: 300px;"></table>
+
+<script type="text/javascript">
+	$(function(){
+		$('#pg').propertygrid({
+			width: 300,
+			showGroup: true,
+			data: [
+				{name: '产品名称', value:'电视', group: '1', editor: 'text'},
+				{name: '产品名称', value:'空调', group: '1', editor: 'text'},
+				{name: '产品名称', value:'薯片', group: '2', editor: 'text'},
+				{name: '产品名称', value:'瓜子', group: '2', editor: 'text'},
+			],
+			groupFormatter: function(group, rows) {
+				var count = rows.length;
+				if (group == '1') {
+					return "电器-<span style='color:red;'>" + count + "条数据</span>";
+				} else if (group == '2') {
+					return "食品-<span style='color:red;'>" + count + "条数据</span>";
+				} else {
+					return "未知";
+				}
+			}
+		})
+	})
+</script>
+{/include file="_footer.html"/}

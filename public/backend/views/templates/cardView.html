@@ -1,0 +1,68 @@
+{/include file="_header.html"/}
+<table id="dg-cardview"></table>
+<script type="text/javascript">
+	var cardview = $.extend({}, $.fn.datagrid.defaults.view, {
+		renderRow: function(target, fields, frozen, rowIndex, rowData) {
+			// 将该行数据全部保存到数组中
+			var cc = [];
+			// 定义表格中的一行
+			cc.push('<td colspan='+fields.length+' style="padding:10px 5px; border: 0;">');
+			// 不对冻结的容器进行渲染
+			if (!frozen) {
+				var img = rowData.img;
+				cc.push('<img src="/common/img/'+img+'" style="width:150px; float:left;">');
+				cc.push('<div style="float:left; margin-left:20px;">');
+				for (var i = 0; i < fields.length; i++) {
+					var copts = $(target).datagrid('getColumnOption', fields[i]);
+					cc.push('<p><span class="c-label">' + copts.title + ':</span>' + rowData[fields[i]] + '</p>');
+				}
+				cc.push('</div>');
+			}
+			cc.push('</dd>');
+			return cc.join('');
+		}
+	});
+	$(function(){
+		$('#dg-cardview').datagrid({
+			width: 500,
+			height:400,
+			view: cardview,
+			columns: [[
+				{field: 'productname', title: '产品名称', width: '25%'},
+				{field: 'producttype', title: '产品类型', width: '25%', align: 'center'},
+				{field: 'productprice', title: '产品价格', width: '25%', align: 'center'},
+				{field: 'productvolume', title: '产品销量', width: '25%', align: 'center'}
+			]],
+			data: [
+				{
+					productname: '空调',
+					producttype: '电器',
+					productprice: '5000',
+					productvolume: '120',
+					productaddress: '南京',
+					producttime: '2019年1月8日',
+					img: 'zg.png',
+				},
+				{
+					productname: '冰箱',
+					producttype: '电器',
+					productprice: '500',
+					productvolume: '20',
+					productaddress: '北京',
+					producttime: '2018年12月8日',
+					img: 'mg.png',
+				},
+				{
+					productname: '瓜子',
+					producttype: '零食',
+					productprice: '50',
+					productvolume: '1020',
+					productaddress: '上海',
+					producttime: '2019年1月18日',
+					img: 'yg.png',
+				}
+			],
+		});
+	});
+</script>
+{/include file="_footer.html"/}

@@ -1,0 +1,55 @@
+{/include file="_header.html"/}
+
+<div id="nav" class="easyui-accordion" width="200px">
+	<!-- 导航内容 -->
+</div>
+
+
+<script type="text/javascript">
+	$(function(){
+		var menu_content = {
+			"content": [
+				{
+					"menuid": "1",
+					"icon"	: "icon-man",
+					"menuname": "人员信息",
+					"menus": [
+						{"menuid": "11","menuname":"添加用户","icon":"icon-add"},
+						{"menuid": "12","menuname":"用户列表","icon":"icon-redo"}
+					]
+				},
+				{
+					"menuid": "2",
+					"icon"	: "icon-print",
+					"menuname": "项目管理",
+					"menus": [
+						{"menuid": "21","menuname":"添加项目","icon":"icon-add"},
+						{"menuid": "22","menuname":"项目列表","icon":"icon-redo"}
+					]
+				},
+			]
+		};
+
+		// 初始化折叠面板
+		$('#nav').accordion({animate: false});
+		// 将导航内容动态的添加到折叠面板中
+		$.each(menu_content.content, function(i, n) {
+			var menulist = '';
+			menulist += '<ul>';
+
+			$.each(n.menus, function(j ,o) {
+				menulist += '<li><div><a id="'+o.menuid+'" href="#"><span class="'+o.icon+'">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="nav">'+o.menuname+'</span></a></div></li>';
+			});
+
+			menulist += '</ul>';
+
+			$('#nav').accordion('add', {
+				title: n.menuname,
+				content: menulist,
+				iconCls: 'icon ' + n.icon
+			})
+		});
+	});
+
+</script>
+{/include file="_footer.html"/}

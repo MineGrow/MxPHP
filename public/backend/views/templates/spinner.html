@@ -1,0 +1,30 @@
+{/include file="_header.html"/}
+<!-- 数字微调器 -->
+<!-- <input class="easyui-numberspinner"></input> -->
+<input id="ss" value="10"></input>
+
+<!-- 时间微调器 -->
+<input id="tim"></input>
+
+<!-- 日期微调器 -->
+<input id="date"></input>
+<script type="text/javascript">
+	$('#ss').numberspinner({
+		min:10,
+		max:100,
+		increment:10,
+		editable: false
+	});
+	// 设置值
+	// $('#ss').numberspinner('setValue', '50');
+	$('#tim').timespinner({
+		min: '05:30',
+		required: true,
+		showSeconds:true
+	});
+
+	$('#date').datetimespinner({
+		
+	})
+</script>
+{/include file="_footer.html"/}

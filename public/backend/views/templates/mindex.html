@@ -1,0 +1,55 @@
+{/include file="_mheader.html"/}
+<script src="/easyui/plugins/jquery.cookie.js" type="text/javascript"></script>
+<div class="easyui-navpanel" style="position: relative; padding: 20px;">
+	<header>
+		<div class="m-toolbar">
+			<div class="m-title">
+				工具栏
+			</div>
+			<div class="m-left">
+				<a class="easyui-linkbutton" href="javascript:;" plain="true" outline="true">返回</a>
+			</div>
+			<div class="m-right">
+				<a class="easyui-linkbutton" href="javascript:;" plain="true" outline="true">下一层</a>
+				<a href="javascript:;" id="mb" class="easyui-menubutton" style="float: right;" data-options="menu:'#mm'">切换主题</a>
+
+				<div id="mm" style="width: 150px;">
+					<div onclick="changeTheme('default')">default</div>
+					<div onclick="changeTheme('metro')">metro</div>
+					<div onclick="changeTheme('gray')">gray</div>
+				</div>
+			</div>
+		</div>
+	</header><!-- /header -->
+
+	<footer>
+		<div class="m-buttongroup m-buttongroup-justified" style="width: 100%">
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-large-picture', size:'large', iconAlign:'top', plain:true">图片</a>
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-large-clipart', size:'large', iconAlign:'top', plain:true">剪辑</a>
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-large-shapes', size:'large', iconAlign:'top', plain:true">图形</a>
+			<a class="easyui-linkbutton" data-options="iconCls:'icon-large-smartart', size:'large', iconAlign:'top', plain:true">元素</a>
+		</div>
+	</footer>
+</div>
+
+<script type="text/javascript">
+	$(function(){
+		changeTheme = function(themeName) {
+			// 获取当前主题地址
+			var $easyuiTheme = $('#easyuiTheme');
+			var url = $easyuiTheme.attr('href');
+
+			var href = url.substring(0, url.indexOf('themes')) + 'themes/' + themeName + '/easyui.css';
+			$easyuiTheme.attr('href', href);
+
+			$.cookie('theme', themeName, {expires: 7});
+		}
+
+		var themeName = $.cookie('theme');
+		if (themeName) {
+			changeTheme(themeName);
+		}
+	});
+
+</script>
+{/include file="_mfooter.html"/}

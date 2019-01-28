@@ -1,0 +1,50 @@
+{/include file="_header.html"/}
+
+<input id="dt1"></input>
+<input id="dt2"></input>
+<div id="cc"></div>
+
+<input class="easyui-datetimebox"></input>
+
+<script type="text/javascript">
+	$(function(){
+		$('#dt1').datebox({
+			width:300,
+			currentText: '今天',
+			closeText: '关闭',
+			sharedCalendar:"#cc"
+		});
+		// 共享{{{
+		$('#dt2').datebox({
+			sharedCalendar:"#cc"
+		});
+		// }}}
+		// 复制{{{
+		// $('#dt2').datebox('cloneFrom', '#dt1');
+		// }}}
+
+		$('#cc').calendar({
+			current: new Date(),
+			width: 400,
+			height: 300,
+			showWeek: true,	// 显示当前星期是当年的第几个星期
+			// weekNumberHeader: '星期数',
+			firstDay: '1', 	//设置星期一为每周的第一天
+			months: ['1月','2月','3月','4月','5月','6月','7月','8月','9月','10月','11月','12月'],
+			weeks: ['周日', '周一', '周二', '周三', '周四', '周五', '周六'],
+			formatter: function(date) {
+				return date.getDate()+'日';
+			},
+			styler: function(date) {
+				if (date.getDay() == 6) {
+					return 'color:red';		// 周六设置为红色
+				}
+				if (date.getDay() == 0) {
+					return 'color:blue';	// 周日设置为蓝色
+				}
+			}
+
+		})
+	});
+</script>
+{/include file="_footer.html"/}

@@ -1,0 +1,45 @@
+{/include file="_header.html"/}
+
+<a href="#" title="这是一段提示信息" class="easyui-tooltip">提示框</a>
+
+<a id="dd" href="#">单击这里</a>
+
+<br><br>
+
+<input id="tb" class="easyui-textbox"></input>
+
+<br><br>
+
+<a id="add" class="easyui-linkbutton" data-options="iconCls:'icon-add', plain:true"></a>
+<a id="edit" class="easyui-linkbutton" data-options="iconCls:'icon-edit', plain:true"></a>
+<a id="del" class="easyui-linkbutton" data-options="iconCls:'icon-remove', plain:true"></a>
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#dd').tooltip({
+			position: 'right',
+			content:'<span style="color:#ccc">这是提示</span>'
+		});
+
+		$('#tb').textbox('textbox').tooltip({
+			position: 'right',
+			content: '这是一段提示信息',
+			deltaX:0
+		});
+
+		$('#add').tooltip({
+			position: 'bottom',
+			content: '新增'
+		});
+		$('#edit').tooltip({
+			position: 'bottom',
+			content: '编辑'
+		});
+		$('#del').tooltip({
+			position: 'bottom',
+			content: '删除'
+		});
+	})
+</script>
+{/include file="_footer.html"/}
