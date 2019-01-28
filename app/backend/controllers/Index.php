@@ -6,6 +6,7 @@ use Core\App;
 use Core\Common\Log;
 use Core\Common\Smarty;
 use Core\Orm\DB;
+use Core\Common\Captcha;
 use PDO;
 
 /**
@@ -592,5 +593,12 @@ class Index
 			echo json_encode($return);
 			
 		}
+	}
+
+	public function captcha()
+	{
+		$Captcha = new Captcha();
+		$Captcha->captchaImg();
+		$_SESSION['authnum_session'] = $Captcha->getCaptcha();
 	}
 }
