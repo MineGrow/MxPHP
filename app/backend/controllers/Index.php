@@ -21,6 +21,8 @@ class Index
 
 	public function hello()
 	{
+		$te = session_id();
+		var_dump($te);exit;
 		return "Hello Mx PHP";
 	}
 

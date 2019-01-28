@@ -8,6 +8,7 @@ use Core\Handles\ConfigHandle;
 use Core\Handles\LogHandle;
 use Core\Handles\NosqlHandle;
 use Core\Handles\UserDefinedHandle;
+use Core\Handles\SessionHandle;
 use Core\Exceptions\CoreHttpException;
 use Core\Request;
 use Core\Response;
@@ -35,6 +36,10 @@ try {
 	$app->load(function() {
 		return new LogHandle();
 	});
+    // Session 开启
+    $app->load(function() {
+    	return new SessionHandle();
+    });
 	// 错误处理机制
 	$app->load(function() {
 		return new ErrorHandle();
