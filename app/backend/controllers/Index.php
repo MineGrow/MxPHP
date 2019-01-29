@@ -22,6 +22,8 @@ class Index
 
 	public function hello()
 	{
+		$test = App::$app->pathInfo;
+		print_r($test);
 		$te = session_id();
 		var_dump($te);exit;
 		return "Hello Mx PHP";

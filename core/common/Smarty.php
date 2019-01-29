@@ -17,11 +17,15 @@ class Smarty {
 		# 配置 smarty 分隔符
     	$this->instance->left_delimiter = "{/";
 		$this->instance->right_delimiter = "/}";
-
+		
+		$pathInfo = App::$app->pathInfo;
+		$moduleName = isset($pathInfo['module']) ? strtolower($pathInfo['module']) : 'common';
+		$controllerName = isset($pathInfo['controller']) ? strtolower($pathInfo['controller']) : 'index';
+		
 		# 获取模板路径 
-		$this->viewsPath = App::$app->rootPath . '/public/' . strtolower(App::$container->getSingle('config')->config['view_dir']) . '/views';
-
-		$this->instance->setTemplateDir($this->viewsPath . '/templates/'); //设置模板目录
+		$this->viewsPath = App::$app->rootPath . '/public/' . strtolower($moduleName) . '/views';
+		# 按控制器分文件夹
+		$this->instance->setTemplateDir($this->viewsPath . "/templates/{$controllerName}/"); //设置模板目录
 		$this->instance->setCompileDir($this->viewsPath . '/templates_c/');
 		$this->instance->setConfigDir($this->viewsPath . '/configs/');
 		$this->instance->setCacheDir($this->viewsPath . '/cache/');

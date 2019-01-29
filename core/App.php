@@ -29,6 +29,9 @@ class App
 	 */
 	public $rootPath;
 
+	// path 信息
+	public $pathInfo;
+
 	/**
 	 * 响应对象
 	 * @var [type]
