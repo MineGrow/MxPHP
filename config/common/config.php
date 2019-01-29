@@ -7,4 +7,10 @@ return [
 	'module'	=> [
 		'common'
 	],
+	# 路由默认配置
+	'route'						=> [
+		'default_module'		=> 'common',
+		'default_controller'	=> 'index',
+		'default_action'		=> 'index',
+	],
 ];

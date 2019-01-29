@@ -83,4 +83,14 @@ class ConfigHandle implements Handle
 			}
 		}
 	}
+
+	// 读取自定义配置
+	public function loadModuleConfig(App $app, $module)
+	{
+		$value =strtolower($module);
+		$files = "{$app->rootPath}/config/{$value}/config.php";
+		if (file_exists($files)) {
+			$this->config = array_merge($this->config, require($files));
+		}
+	}
 }

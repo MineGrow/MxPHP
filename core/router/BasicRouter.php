@@ -65,10 +65,16 @@ class BasicRouter implements Router
 		$this->app 			= $app;
 		
 		$this->config 		= $app::$container->getSingle('config');
+
 		
-		$this->moduleName 		= $this->config->config['route']['default_module'];
-		$this->controllerName	= $this->config->config['route']['default_controller'];
-		$this->actionName 		= $this->config->config['route']['default_action'];
+		$this->moduleName 		= !empty($this->request->get('module')) ? $this->request->get('module') : $this->config->config['route']['default_module'];
+		$this->controllerName	= !empty($this->request->get('contoller')) ? $this->request->get('contoller') : $this->config->config['route']['default_controller'];
+		$this->actionName 		= !empty($this->request->get('action')) ? $this->request->get('action') : $this->config->config['route']['default_action'];
+
+		// 自定义模块配置
+		if ($this->moduleName != $this->config->config['route']['default_module']) {
+			$this->config->loadModuleConfig($this->app, $this->moduleName);
+		}
 
 		// 路由决策
 		$this->strategyJudge();
@@ -126,6 +132,7 @@ class BasicRouter implements Router
 
 	public function start()
 	{
+		// var_dump(strtolower($this->moduleName), $this->config->config['module']);
 		// 判断模块不存在
 		if (! in_array(strtolower($this->moduleName), $this->config->config['module'])) {
 			throw new CoreHttpException(404, "{$this->executeType}:{$this->classPath}");

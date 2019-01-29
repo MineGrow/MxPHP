@@ -22,6 +22,11 @@ class CaptchaImg
 		$Captcha->captchaImg();
 		$_SESSION['authnum_session'] = $Captcha->getCaptcha();
 	}
+
+	public function getAuthnum()
+	{
+		echo $_SESSION['authnum_session'];
+	}
 }
 
 
