@@ -7,4 +7,10 @@ return [
 	'module'	=> [
 		'backend'
 	],
+	# 路由默认配置 后台入口
+	'route'						=> [
+		'default_module'		=> 'backend',
+		'default_controller'	=> 'main',
+		'default_action'		=> 'index',
+	],
 ];

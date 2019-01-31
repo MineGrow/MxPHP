@@ -12,7 +12,7 @@ class UserDefinedCase
 	
 	private $map = [
 		// 加载自定义网关
-		// 'App\Backend\Logics\Gateway\Entrance'
+		// 'App\Backend\Logics\Access\Entrance'
 	];
 
 	public function __construct(App $app)

@@ -29,9 +29,19 @@ class App
 	 */
 	public $rootPath;
 
-	// path 信息
+	/**
+	 * 请求参数 path 信息 module|controller|action
+	 *
+	 * @var [type]
+	 */
 	public $pathInfo;
 
+	/**
+	 * 登录用户信息
+	 *
+	 * @var [type]
+	 */
+	public $userInfo;
 	/**
 	 * 响应对象
 	 * @var [type]

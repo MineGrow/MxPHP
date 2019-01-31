@@ -19,6 +19,7 @@ class Smarty {
 		$this->instance->right_delimiter = "/}";
 		
 		$pathInfo = App::$app->pathInfo;
+		// var_dump($pathInfo);exit();
 		$moduleName = isset($pathInfo['module']) ? strtolower($pathInfo['module']) : 'common';
 		$controllerName = isset($pathInfo['controller']) ? strtolower($pathInfo['controller']) : 'index';
 		

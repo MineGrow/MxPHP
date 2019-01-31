@@ -27,10 +27,17 @@ class UserDefinedHandle implements Handle
 	public function register(App $app)
 	{
 		$config = $app::$container->getSingle('config');
+		$request= $app::$container->get('request');
+
+		// 获取访问的 module ，并重新初始化 config
+		$moduleName	= !empty($request->get('module')) ? $request->get('module') : $config->config['route']['default_module'];
+		
+		if ($moduleName != $config->config['route']['default_module']) {
+			$config->loadModuleConfig($app, $moduleName);
+		}
 
 		foreach ($config->config['module'] as $v) {
-			$v = ucwords($v);
-			$className = "\App\\{$v}\\Logics\UserDefinedCase";
+			$v = ucwords($v); $className = "\App\\{$v}\\Logics\UserDefinedCase";
 			new $className($app);
 		}
 	}

@@ -66,23 +66,25 @@ class BasicRouter implements Router
 		
 		$this->config 		= $app::$container->getSingle('config');
 
-		
 		$this->moduleName 		= !empty($this->request->get('module')) ? $this->request->get('module') : $this->config->config['route']['default_module'];
-		$this->controllerName	= !empty($this->request->get('contoller')) ? $this->request->get('contoller') : $this->config->config['route']['default_controller'];
+		$this->controllerName	= !empty($this->request->get('controller')) ? $this->request->get('controller') : $this->config->config['route']['default_controller'];
 		$this->actionName 		= !empty($this->request->get('action')) ? $this->request->get('action') : $this->config->config['route']['default_action'];
 
-		// 初始化 APP 的pathInfo 参数
-		$this->app->pathInfo    = ['module' => $this->moduleName, 'controller' => $this->controllerName, 'action' => $this->actionName];
-		// 自定义模块配置
-		if ($this->moduleName != $this->config->config['route']['default_module']) {
-			$this->config->loadModuleConfig($this->app, $this->moduleName);
-		}
-
+		
+		
+		
 		// 路由决策
 		$this->strategyJudge();
-
 		// 路由策略
 		(new $this->routeStrategyMap[$this->routeStrategy])->route($this);
+		
+		// 自定义模块配置
+		if ($this->moduleName != $this->config->config['route']['default_module']) {
+
+			$this->config->loadModuleConfig($this->app, $this->moduleName);
+		}
+		// 初始化 APP 的pathInfo 参数
+		$this->app->pathInfo    = ['module' => $this->moduleName, 'controller' => $this->controllerName, 'action' => $this->actionName];
 
 		$this->makeClassPath($this);
 

@@ -31,7 +31,7 @@
 		$('#dg-c82').datagrid({
 			width: 610,
 			toolbar: '#tb-c82',
-			url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=getProduct',
+			url: 'http://www.mxphp.cos/index.php?module=backend&controller=Index&action=getProduct',
 			singleSelect: true,
 			columns:[
 				[
@@ -180,7 +180,7 @@
 					if (r) {
 						$.ajax({
 							type: 'post',
-							url: 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=deleteProduct',
+							url: 'http://www.mxphp.cos/index.php?module=backend&controller=Index&action=deleteProduct',
 							data: {id: row.id},
 							dataType:'json',
 							success: function(result) {
@@ -206,10 +206,10 @@
 		$('#ok').click(function() {
 			if (state == '2') {
 				// 更新数据
-				var url = 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=updateProduct';
+				var url = 'http://www.mxphp.cos/index.php?module=backend&controller=Index&action=updateProduct';
 			} else {
 				// 创建数据
-				var url = 'http://www.mxphp.cos/index.php?module=backend&contoller=Index&action=createProduct';
+				var url = 'http://www.mxphp.cos/index.php?module=backend&controller=Index&action=createProduct';
 			}
 
 			$('#ff').form('submit', {

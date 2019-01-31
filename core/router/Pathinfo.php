@@ -19,6 +19,7 @@ class Pathinfo implements RouterInterface
 			preg_match_all('/^\/(.*)/', $entrance->requestUri, $uri);
 		}
 
+		// var_dump($entrance->requestUri);exit();
 		// 使用默认模块/控制器/操作逻辑
 		if (!isset($uri[1][0]) || empty($uri[1][0])) {
 			if ($entrance->app->runningMode === 'cli') {
@@ -27,6 +28,7 @@ class Pathinfo implements RouterInterface
 			return;
 		}
 		$uri = $uri[1][0];
+
 
 		// 自定义路由判断  最后面的 "/" 过滤
 		$uri = explode('/', rtrim($uri, '/'));
