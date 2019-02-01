@@ -70,9 +70,6 @@ class BasicRouter implements Router
 		$this->controllerName	= !empty($this->request->get('controller')) ? $this->request->get('controller') : $this->config->config['route']['default_controller'];
 		$this->actionName 		= !empty($this->request->get('action')) ? $this->request->get('action') : $this->config->config['route']['default_action'];
 
-		
-		
-		
 		// 路由决策
 		$this->strategyJudge();
 		// 路由策略

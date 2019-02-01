@@ -19,7 +19,7 @@ class Smarty {
 		$this->instance->right_delimiter = "/}";
 		
 		$pathInfo = App::$app->pathInfo;
-		// var_dump($pathInfo);exit();
+		
 		$moduleName = isset($pathInfo['module']) ? strtolower($pathInfo['module']) : 'common';
 		$controllerName = isset($pathInfo['controller']) ? strtolower($pathInfo['controller']) : 'index';
 		
@@ -30,6 +30,9 @@ class Smarty {
 		$this->instance->setCompileDir($this->viewsPath . '/templates_c/');
 		$this->instance->setConfigDir($this->viewsPath . '/configs/');
 		$this->instance->setCacheDir($this->viewsPath . '/cache/');
+
+		# 公共模板文件路径 直接使用 $BASE_DIR
+		$this->instance->assign('BASE_DIR', $this->viewsPath."/templates/base");
 
 		# 判断是否调试环境
 		$this->smartyConfig = env('smarty');

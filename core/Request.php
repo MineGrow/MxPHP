@@ -32,6 +32,8 @@ class Request
 	private $consumeTime	= 0;
 	// 请求身份 id 每个请求唯一识别 id
 	private $rquestId		= '';
+	// path_info
+	private $path_info      = '';
 
 	public function __construct(App $app)
 	{
@@ -56,6 +58,7 @@ class Request
 		$this->serverIp 	= isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
 		$this->clientIp		= isset($_SERVER['SERVER_ADDR']) ? $_SERVER['SERVER_ADDR'] : '';
 		$this->beginTime	= isset($_SERVER['REQUEST_TIME_FLOAT']) ? $_SERVER['REQUEST_TIME_FLOAT'] : microtime(true);
+		$this->path_info 	= isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
 
 		if ($app->runningMode === 'cli') {
 			// cli 模式

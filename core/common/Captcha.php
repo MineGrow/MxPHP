@@ -88,6 +88,24 @@ class Captcha{
 		return strtolower($this->code);
 	}
 
+	// 验证码校验
+	public function checkCaptcha($captcha)
+	{
+		$returnArr = array('status' => 0, 'msg' =>'checkCaptcha_error');
+		if (isset($_SESSION['authnum_session'])) {
+			if (strtolower($captcha) != $_SESSION['authnum_session']) {
+				$returnArr['status'] = -1;
+				$returnArr['msg']    = $_SESSION['authnum_session'];
+			} else {
+				$returnArr['status'] = 1;
+				$returnArr['msg']    = 'success';
+			}
+		} else {
+			$returnArr['msg'] = 'authnum_session_error';
+		}
+		return $returnArr;
+	}
+
 	public function __destruct()
 	{
 		

@@ -1,0 +1,70 @@
+{/include file="$BASE_DIR/_header.html"/}
+
+<style type="text/css">
+	#login_panel{
+		width: 300px;
+		margin: 0 auto 0;
+		position: relative;
+		margin-top: 15%;
+	}
+
+	#login_panel div {
+		margin: 10px;
+	}
+
+</style>
+
+<div id="login_panel">
+	<form action="" method="post" id="login_form">
+		<div>
+			 <input class="easyui-textbox" name="code" data-options="prompt:'请输入账号',iconCls:'icon-man', buttonText:'账&nbsp;&nbsp;&nbsp;号', buttonAlign:'left', width:'100%', height:'38', required:'true'"/>
+		</div>
+		<div>
+			 <input class="easyui-passwordbox" name="password" data-options="prompt:'请输入密码',buttonText:'密&nbsp;&nbsp;&nbsp;码', buttonAlign:'left', width:'100%', height:'38',required:'true'"/>
+		</div>
+		<div>
+			<input class="easyui-textbox" name="captcha" data-options="prompt:'请输入验证码',buttonText:'验证码 ', buttonAlign:'left',width:'64%', height:'38',required:'true',tipPosition:'bottom'"/>
+			<img src="/common/captchaImg/index/?{/$smarty.now/}" class="captchaImg" title="点击刷新验证码" style="width: 34%; float: right;height: 36px;cursor: pointer;">
+		</div>
+		<div>
+			<a class="easyui-linkbutton c1 doSubmit" data-options="width:'49%',text:'登录', height:'38', size:'large' " href="javascript:void(0);"></a>
+			<a class="easyui-linkbutton c2 doClear" data-options="width:'49%',text:'重置', height:'38', size:'large' " href="javascript:void(0);"></a>
+		</div>
+	</form>	
+</div>
+
+
+<script type="text/javascript">
+	$(function(){
+		$('#login_form').form({
+			url: '/backend/login/login/',
+			onSubmit: function(){
+				// alert('onSubmit');
+			},
+			success: function(data) {
+				result = eval('('+data+')');
+				console.log(result);
+				alert(result.msg);
+				if (result.status == '-2') {
+					$('.captchaImg').trigger('click');
+				}
+			}
+		});
+
+		$('.doSubmit').click(function(){
+			$('#login_form').submit();
+			return false;
+		});
+
+		$('.doClear').click(function(){
+			$('#login_form').form('clear');
+			return false;
+		});
+
+		$('.captchaImg').click(function(){
+			$(this).attr('src', "/common/captchaImg/index/?{/$smarty.now/}");
+			return false;
+		});
+	});
+</script>
+{/include file="$BASE_DIR/_footer.html"/}

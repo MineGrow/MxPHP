@@ -3,7 +3,7 @@
  * 框架助手函数文件
  */
 use Core\App;
-
+use Core\Common\Captcha;
 
 /**
  * 获取环境参数
@@ -63,6 +63,7 @@ if (! function_exists('debug')) {
 }
 
 if (! function_exists('get_client_ip')) {
+	// 获取请求 IP
 	function get_client_ip($type=0)
 	{
 		$type = $type ? 1 : 0;
@@ -79,5 +80,41 @@ if (! function_exists('get_client_ip')) {
         $long = sprintf("%u",ip2long($ip));
     	$ip   = $long ? array($ip, $long) : array('0.0.0.0', 0);
     	return $ip[$type];
+	}
+}
+
+if (! function_exists('parse_pathinfo')) {
+	// 解析 PATH_INFO 参数
+	function parse_pathinfo($path, $field='module')
+	{
+		if ($path) {
+			$temp = rtrim(ltrim($path, '/'), '/');
+
+			$path_info = explode('/', $temp);
+			$fields = ['module' => 0, 'controller' => 1, 'action' => 2];
+	    	return (isset($fields[$field]) && isset($path_info[$fields[$field]])) ? $path_info[$fields[$field]] : '';
+		} else {
+			return '';
+		}
+
+	}
+}
+
+if (! function_exists('response_json')) {
+	// 返回 json 数据
+	function response_json($data)
+	{
+        echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        exit;
+	}
+}
+
+if (! function_exists('check_captcha')) {
+	// 验证码校验
+	function check_captcha($captcha)
+	{
+		$OCaptcha = new Captcha();
+		$result = $OCaptcha->checkCaptcha($captcha);
+		return $result;
 	}
 }

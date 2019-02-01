@@ -32,7 +32,7 @@ class Entrance
 				break;
 			case '0':
 				# 需要登录
-				// header("Location:/index.php");exit;
+				header("Location:/Backend/Login/Index/");exit();
 				break;
 			default:
 			// 设置 App userInfo 信息
